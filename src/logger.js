@@ -24,10 +24,9 @@ class Logger extends React.Component{
 
         const reqconfig = {
             headers: { 'Content-Type': 'application/json' },
-            withCredentials: true
         }
 
-        axios.post("http://localhost:8000/users/token/", JSON.stringify({code: val.code}), reqconfig).then((request)=>{
+        axios.post("/users/token/", JSON.stringify({code: val.code}), reqconfig).then((request)=>{
             this.setState({reqstatus:true})
         }).catch((error) => {
             this.setState({hell:true})

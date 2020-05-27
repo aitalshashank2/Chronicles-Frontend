@@ -9,11 +9,10 @@ class Projects extends React.Component{
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8000/projects/', {withCredentials: true}).then(
+        axios.get('/projects/').then(
             (response) => {
                 this.setState({proj: response.data})
                 this.setState({recRes: true})
-                console.log(response.data[0])
             }
         )
     }
@@ -24,7 +23,7 @@ class Projects extends React.Component{
                 <CardGroup itemsPerRow={4}>
                     {this.state.proj.map((value, index) => {
                         return (
-                            <Card color="purple" href={"/projects/"+value['id']}>
+                            <Card color="purple" href={"/projects/"+value['slug']} key={index}>
                                 <Image src={value['image']} wrapped ui={false} />
                                 <Card.Content>
                                     <Card.Header>{value['name']}</Card.Header>

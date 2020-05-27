@@ -16,7 +16,7 @@ class Login extends React.Component{
 
     componentDidMount() {
 
-        axios.get('http://localhost:8000/users/curr/', {withCredentials:true}).then(
+        axios.get('/users/curr/').then(
             (response) => {
                     this.setState({loggedin:true})
             }

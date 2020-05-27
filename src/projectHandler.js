@@ -1,19 +1,20 @@
 import React from "react"
 
-import {Container, Form, Loader, Header, TextArea, Dropdown, Button} from 'semantic-ui-react'
+import {Container, Form, Loader, Header, TextArea, Dropdown, Button, Message} from 'semantic-ui-react'
 
 import Navbar from "./navbar"
 import axios from "axios"
 import {Redirect} from "react-router-dom"
+import slug from 'slug'
 
 class ProjectForm extends React.Component{
     constructor(props) {
         super(props)
-        this.state = {userListReceived: false, userList: [], creationSuccess: false, name:'', description:'', team: [], image: null}
+        this.state = {userListReceived: false, userList: [], creationSuccess: false, name:'', description:'', team: [], image: null, slug:'', errmsg:''}
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8000/users/', {withCredentials:true}).then(
+        axios.get('/users/').then(
             (response) => {
                 this.setState({userList: response.data,userListReceived:true})
             }
@@ -22,13 +23,10 @@ class ProjectForm extends React.Component{
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value})
-
     }
 
     handleDropDown = (event, data) => {
-        this.state.team.push(data.value)
-        console.log(data.value)
-        console.log(this.state.team)
+        this.setState({team: data.value})
     }
 
     handleImage = (event) => {
@@ -37,29 +35,26 @@ class ProjectForm extends React.Component{
 
     handleSubmit = (event) => {
         event.preventDefault()
-        const url = 'http://localhost:8000/projects/'
+        const url = '/projects/'
         const formdata = new FormData()
         formdata.append('name', this.state.name)
-        console.log(this.state.name)
         formdata.append('description', this.state.description)
-        this.state.team[this.state.team.length-1].forEach((value) => {
+        this.state.team.forEach((value) => {
             formdata.append('team', value)
         })
         formdata.append('image', this.state.image)
+        formdata.append('slug', this.state.slug)
 
         const config = {
             headers:{
                 'content-type': 'multipart/form-data'
-            },
-            withCredentials: true,
+            }
         }
-        axios.defaults.xsrfCookieName = 'csrftoken'
-        axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
         axios.post(url, formdata, config).then((response) => {
             this.setState({creationSuccess: true})
         }).catch((error) => {
-            console.log("Some error occurred")
+            this.setState({errmsg:error.response.data['slug']})
         })
     }
 
@@ -77,6 +72,16 @@ class ProjectForm extends React.Component{
                 value: val['id'],
             }))
 
+            const Errmsg = () => (
+                <Message negative>
+                    <Message.Header>{this.state.errmsg}</Message.Header>
+                </Message>
+            )
+
+            if(this.state.errmsg !== ''){
+                return <Errmsg />
+            }
+
             return (
                 <Form onSubmit={this.handleSubmit}>
                     <Header size={"huge"}>New Project</Header>
@@ -85,8 +90,12 @@ class ProjectForm extends React.Component{
                         <input placeholder={"Name of project"} type={"text"} name={"name"} onChange={this.handleChange}/>
                     </Form.Field>
                     <Form.Field>
+                        <label>Slug</label>
+                        <input placeholder={"slug"} type={"text"} name={"slug"} onChange={this.handleChange} defaultValue={slug(this.state.name)} />
+                    </Form.Field>
+                    <Form.Field>
                         <label>Description</label>
-                        <TextArea placeholder={"Description of the project"} type={"text"} name={"description"} onChange={this.handleChange} />
+                        <TextArea placeholder={"Description of the project"} type={"text"} name={"description"} onChange={this.handleChange}/>
                     </Form.Field>
                     <Form.Field>
                         <label>Team Members</label>
@@ -116,7 +125,7 @@ class ProjectHandler extends React.Component{
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8000/users/curr/', {withCredentials:true}).then(
+        axios.get('/users/curr/', {withCredentials:true}).then(
             (response) => {
                 this.setState({user: response.data.user, responseRec: true, loggedin:true})
             }
