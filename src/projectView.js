@@ -15,6 +15,7 @@ import {
     Button,
     Dropdown,
     Label,
+    Item,
 } from "semantic-ui-react"
 
 import Navbar from "./navbar"
@@ -287,6 +288,18 @@ class BugReportDetail extends React.Component{
         })
     }
 
+    tagDeHash = function(h) {
+        let x = []
+        let i = 0
+        while(i<32){
+            if((h&(1<<i)) !== 0){
+                x.push(i)
+            }
+            i++
+        }
+        return x
+    }
+
     componentDidMount() {
         this.dockBugReport()
     }
@@ -298,10 +311,44 @@ class BugReportDetail extends React.Component{
     }
 
     render(){
-
         if(this.state.bugReportReceived){
+            let imageExists
+            if(this.state.bugReportImage !== null){
+                imageExists = (<Item.Image src={this.state.bugReportImage} verticalAlign={'middle'} />)
+            }else{
+                imageExists = null
+            }
+
             return (
-                <Header as={'h1'}>{this.state.bugReportHeading}</Header>
+                <div>
+                    <Segment raised style={{backgroundColor: (this.state.bugReportStatus ? '#e6ffe6':'#ffe6e6')}}>
+                        <Item.Group>
+                            <Item>
+                                {imageExists}
+                                <Item.Content verticalAlign={'middle'}>
+                                    <Item.Header style={{fontSize: '2em', lineHeight: '2.2em'}}>{this.state.bugReportHeading}</Item.Header>
+                                    <Item.Meta>Reporter: {this.state.bugReportReporter['username']}</Item.Meta>
+                                    <Item.Description>
+                                        {this.state.bugReportDescription}<br />
+                                        <Header as={'h4'} style={{color: (this.state.bugReportPIC === null) ? 'red' : 'green'}}>
+                                            Person in charge: {(this.state.bugReportPIC === null) ? "Not assigned" : this.state.bugReportPIC['username']}
+                                        </Header>
+                                    </Item.Description>
+                                    <Item.Extra>
+                                        <div>
+                                            {this.tagDeHash(this.state.bugReportTagHash).map((value1, index1) => {
+                                                return (
+                                                    <Label tag style={{backgroundColor: '#eaeffa', marginBottom:'1em'}}>{tagLegend[value1]}</Label>
+                                                )
+                                            })}
+                                        </div>
+                                    </Item.Extra>
+                                </Item.Content>
+                            </Item>
+                        </Item.Group>
+                    </Segment>
+                    <Segment>Comments</Segment>
+                </div>
             )
         }else{
             return (
@@ -362,13 +409,13 @@ class ProjectView extends React.Component{
             <div>
                 <Navbar /><br />
                 <Grid divided style={{minHeight: '87vh', maxHeight: '87vh', overflow: 'hidden'}} padded>
-                    <Grid.Column width={3} style={{overflowY: 'scroll', maxHeight: 'inherit'}}>
+                    <Grid.Column width={3} style={{overflowY: 'scroll', maxHeight: 'inherit'}} className={"scrollBar"}>
                         <ProjectInfo slug={this.props.match.params.slug} onChange={this.handleChange} />
                     </Grid.Column>
-                    <Grid.Column width={6} style={{overflowY: 'scroll', maxHeight: 'inherit'}}>
+                    <Grid.Column width={6} style={{overflowY: 'scroll', maxHeight: 'inherit'}} className={"scrollBar"}>
                         <BugList slug={this.props.match.params.slug} onChange={this.handleChange} />
                     </Grid.Column>
-                    <Grid.Column width={7} style={{overflowY: 'scroll', maxHeight: 'inherit'}}>
+                    <Grid.Column width={7} style={{overflowY: 'scroll', maxHeight: 'inherit'}} className={"scrollBar"}>
                         <TheThirdPart stateIndex={this.state.bugReport} project={this.state.project} onChange={this.handleChange} />
                     </Grid.Column>
                 </Grid>
