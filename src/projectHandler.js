@@ -10,7 +10,7 @@ import slug from 'slug'
 class ProjectForm extends React.Component{
     constructor(props) {
         super(props)
-        this.state = {userListReceived: false, userList: [], creationSuccess: false, name:'', description:'', team: [], image: null, slug:'', errmsg:''}
+        this.state = {userListReceived: false, userList: [], creationSuccess: false, name:'', description:'', team: [], image: null, slug:'', errorStatus: false, errorMsg:''}
     }
 
     componentDidMount() {
@@ -23,6 +23,9 @@ class ProjectForm extends React.Component{
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value})
+        if(event.target.name === 'name'){
+            this.setState({slug: slug(event.target.value)})
+        }
     }
 
     handleDropDown = (event, data) => {
@@ -54,7 +57,7 @@ class ProjectForm extends React.Component{
         axios.post(url, formdata, config).then((response) => {
             this.setState({creationSuccess: true})
         }).catch((error) => {
-            this.setState({errmsg:error.response.data['slug']})
+            this.setState({errorStatus: true, errorMsg:error.response.data['slug']})
         })
     }
 
@@ -72,19 +75,19 @@ class ProjectForm extends React.Component{
                 value: val['id'],
             }))
 
-            const Errmsg = () => (
-                <Message negative>
-                    <Message.Header>{this.state.errmsg}</Message.Header>
-                </Message>
-            )
-
-            if(this.state.errmsg !== ''){
-                return <Errmsg />
+            let errorMessage
+            if(this.state.errorStatus){
+                errorMessage = (
+                    <Message negative>{this.state.errorMsg}</Message>
+                )
+            }else{
+                errorMessage = (<div style={{display: 'none'}} />)
             }
 
             return (
                 <Form onSubmit={this.handleSubmit}>
                     <Header size={"huge"}>New Project</Header>
+                    {errorMessage}
                     <Form.Field>
                         <label>Name</label>
                         <input placeholder={"Name of project"} type={"text"} name={"name"} onChange={this.handleChange}/>

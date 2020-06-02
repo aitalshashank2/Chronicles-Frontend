@@ -18,7 +18,7 @@ axios.defaults.withCredentials = true
 ReactDOM.render((
     <Router>
         <Switch>
-            <Route path={"/projects/:slug"} component={ProjectView} />
+            <Route path={"/projects/:slug/"} component={ProjectView} />
             <Route path="/projects/" component={ProjectHandler} />
             <Route path="/login/" component={Login} />
             <Route path="/logger/" component={Logger} />

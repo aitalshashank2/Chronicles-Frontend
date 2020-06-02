@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
-import {Dropdown, Header, Loader, Menu} from "semantic-ui-react"
+import {Dropdown, Header, Loader, Menu, Sticky} from "semantic-ui-react"
 
 class Navbar extends React.Component{
     constructor(props) {
@@ -49,20 +49,22 @@ class Navbar extends React.Component{
                 }
 
                 return (
-                    <Menu borderless>
-                        <Menu.Item>
-                            <a href={"/"}><Header size={"huge"}>Chronicles</Header></a>
-                        </Menu.Item>
-                        <Menu.Item position={"right"}>
-                            <Dropdown text={this.state.user} direction={"right"} floating item simple>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item icon={"user"} text={"Profile"} value={"profile"} onClick={this.handleDropDown}/>
-                                    <Dropdown.Item icon={"plus"} text={"New Project"} value={"add"} onClick={this.handleDropDown}/>
-                                    <Dropdown.Item icon={"sign-out"} onClick={this.logout} text={"Logout"} />
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Menu.Item>
-                    </Menu>
+                    <Sticky>
+                        <Menu borderless inverted style={{borderRadius: '0'}}>
+                            <Menu.Item>
+                                <a href={"/"}><Header size={"huge"} inverted>Chronicles</Header></a>
+                            </Menu.Item>
+                            <Menu.Item position={"right"}>
+                                <Dropdown text={this.state.user} direction={"right"} floating item simple>
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item icon={"user"} text={"Profile"} value={"profile"} onClick={this.handleDropDown}/>
+                                        <Dropdown.Item icon={"plus"} text={"New Project"} value={"add"} onClick={this.handleDropDown}/>
+                                        <Dropdown.Item icon={"sign-out"} onClick={this.logout} text={"Logout"} />
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Menu.Item>
+                        </Menu><br/>
+                    </Sticky>
                 )
 
             }
