@@ -49,26 +49,11 @@ const tagLegend = [
 class ProjectInfo extends React.Component{
     constructor(props) {
         super(props)
-        this.state = {loadProject: false, loadTeam: false}
+        this.state = {loadTeam: false}
     }
 
     componentDidMount() {
-        axios.get('projects/'+this.props.slug+'/').then((response) => {
-            this.setState({
-                loadProject: true,
-                projectName: response.data['name'],
-                projectId: response.data['id'],
-                projectDescription: response.data['description'],
-                projectCreator: response.data['creator'],
-                projectImage: response.data['image'],
-                projectSlug: response.data['slug'],
-            })
-            this.props.onChange({project: response.data['id']})
-        }).catch((error) => {
-            this.setState({loadProject: false})
-        })
-
-        axios.get('projects/'+this.props.slug+'/team/').then((response) => {
+        axios.get('projects/'+this.props.project['slug']+'/team/').then((response) => {
             this.setState({
                 loadTeam: true,
                 projectTeam: response.data,
@@ -79,48 +64,51 @@ class ProjectInfo extends React.Component{
     }
 
     render(){
-        if(this.state.loadProject){
-            let teamInfo
-            if(this.state.loadTeam){
-                teamInfo = (
-                    <Segment>
-                        <Header size={"medium"} textAlign={"center"}>Team</Header><hr color={'#111111'}/>
-                        <List divided relaxed>
-                            {this.state.projectTeam.map((value, index) => {
-                                return (
-                                    <List.Item key={index}>
-                                        <List.Content>
-                                            <List.Header style={{textAlign: 'center'}}>{value['username']}</List.Header>
-                                        </List.Content>
-                                    </List.Item>
-                                )
-                            })}
-                        </List>
-                    </Segment>
-                )
-            }else{
-                teamInfo = (
-                    <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
-                        <Loader active size="medium" />
-                    </div>
-                )
-            }
 
-            return (
-                <div>
-                    <Image wrapped src={this.state.projectImage} bordered /><hr />
-                    <Header size={"huge"} textAlign={"center"}>{this.state.projectName}</Header>
-                    <p style={{textAlign: 'center', color:'grey'}}>{this.state.projectDescription}</p><hr />
-                    {teamInfo}<hr />
-                </div>
+        let teamInfo
+        if(this.state.loadTeam){
+            teamInfo = (
+                <Segment>
+                    <Header size={"medium"} textAlign={"center"}>Team</Header><hr color={'#111111'}/>
+                    <List divided relaxed>
+                        {this.state.projectTeam.map((value, index) => {
+                            return (
+                                <List.Item key={index}>
+                                    <List.Content>
+                                        <List.Header style={{textAlign: 'center'}}>{value['username']}</List.Header>
+                                    </List.Content>
+                                </List.Item>
+                            )
+                        })}
+                    </List>
+                </Segment>
             )
         }else{
-            return (
+            teamInfo = (
                 <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
                     <Loader active size="medium" />
                 </div>
             )
         }
+
+        return (
+
+            <div style={{zIndex:1, position:"relative", backgroundColor:"#00000099", display: (this.props.isVisible ? "block" : "none")}}>
+                <Grid divided style={{minHeight: 'calc(100vh - 66px)', maxHeight: 'calc(100vh - 66px)'}} padded>
+                    <Grid.Column width={4} style={{overflowY: 'scroll', maxHeight: 'inherit', backgroundColor:"#000000"}} className={"scrollBar"}>
+                        <div>
+                            <Header size={"huge"} textAlign={"center"} inverted>
+                                {this.props.project['name']}
+                                <Icon name={"close"} inverted style={{float: "right"}} link onClick={() => {this.props.onChange({projectDetailsVisible: false})}}/>
+                            </Header>
+                            <Image wrapped src={this.props.project['image']} bordered /><hr />
+                            <p style={{textAlign: 'center', color:'grey'}}>{this.props.project['description']}</p><hr />
+                            {teamInfo}<hr />
+                        </div>
+                    </Grid.Column>
+                </Grid>
+            </div>
+        )
     }
 }
 
@@ -154,21 +142,15 @@ class BugList extends React.Component{
         if(this.state.loadBugReports){
             return (
                 <CardGroup>
-                    <Card color={"purple"} fluid onClick={() => {this.props.onChange({bugReport: -1})}} style={{padding: '1em', alignItems:'center'}}>
-                        <Header as='h3' style={{display: 'flex', alignItems: 'center'}}>
-                            <Icon name='add' />
-                            <Header.Content>New Report</Header.Content>
-                        </Header>
-                    </Card>
                     {this.state.bugReports.map((value, index) => {
                         return (
-                            <Card color={value['status'] ? 'green' : 'red'} fluid style={{padding: '0.5em', marginBottom: '0.25em'}} onClick={() => {this.props.onChange({bugReport: value['id']})}} key={index}>
-                                <Header size={"medium"} style={{margin: 0}}>{value['heading']}</Header>
-                                <p style={{color:'grey', marginTop: '5px'}}>{value['description']}</p>
+                            <Card color={value['status'] ? 'green' : 'red'} fluid style={{padding: '0.5em', marginBottom: '0.25em', backgroundColor: "inherit"}} onClick={() => {this.props.onChange({bugReport: value['id']})}} key={index}>
+                                <Header size={"small"} style={{margin: 0}}>{value['heading']}</Header>
+                                <p style={{color:'grey', marginTop: '5px', marginBottom: '5px'}}>{value['description']}</p>
                                 <div>
                                     {this.tagDeHash(value['tagsHash']).map((value1, index1) => {
                                         return (
-                                            <Label tag style={{backgroundColor: '#eaeffa'}}>{tagLegend[value1]}</Label>
+                                            <Label tag style={{backgroundColor: '#eaeffa', marginBottom: '5px'}}>{tagLegend[value1]}</Label>
                                         )
                                     })}
                                 </div>
@@ -314,7 +296,7 @@ class BugReportDetail extends React.Component{
         if(this.state.bugReportReceived){
             let imageExists
             if(this.state.bugReportImage !== null){
-                imageExists = (<Item.Image src={this.state.bugReportImage} verticalAlign={'middle'} />)
+                imageExists = (<Item.Image src={this.state.bugReportImage} verticalAlign={'middle'} onClick={() => this.props.onChange({magImage: this.state.bugReportImage})} />)
             }else{
                 imageExists = null
             }
@@ -381,7 +363,7 @@ class TheThirdPart extends React.Component{
             )
         }else if(this.props.stateIndex > 0){
             return (
-                <BugReportDetail bugReport={this.props.stateIndex} />
+                <BugReportDetail bugReport={this.props.stateIndex} onChange={this.handleRedirect} />
             )
         }else{
             return (
@@ -397,7 +379,15 @@ class ProjectView extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {bugReport: 0, project: 0}
+        this.state = {bugReport: 0, projectLoaded: false, magImage:""}
+    }
+
+    componentDidMount() {
+        axios.get('/projects/'+this.props.match.params.slug+'/').then((response) => {
+            this.setState({projectLoaded: true, project: response.data, projectDetailsVisible:false})
+        }).catch((error) => {
+            this.setState({projectLoaded: false})
+        })
     }
 
     handleChange = (childState) => {
@@ -405,22 +395,50 @@ class ProjectView extends React.Component{
     }
 
     render(){
-        return (
-            <div>
-                <Navbar /><br />
-                <Grid divided style={{minHeight: '87vh', maxHeight: '87vh', overflow: 'hidden'}} padded>
-                    <Grid.Column width={3} style={{overflowY: 'scroll', maxHeight: 'inherit'}} className={"scrollBar"}>
-                        <ProjectInfo slug={this.props.match.params.slug} onChange={this.handleChange} />
-                    </Grid.Column>
-                    <Grid.Column width={6} style={{overflowY: 'scroll', maxHeight: 'inherit'}} className={"scrollBar"}>
-                        <BugList slug={this.props.match.params.slug} onChange={this.handleChange} />
-                    </Grid.Column>
-                    <Grid.Column width={7} style={{overflowY: 'scroll', maxHeight: 'inherit'}} className={"scrollBar"}>
-                        <TheThirdPart stateIndex={this.state.bugReport} project={this.state.project} onChange={this.handleChange} />
-                    </Grid.Column>
-                </Grid>
-            </div>
-        )
+
+        if(this.state.projectLoaded){
+            if(this.state.magImage !== ""){
+                return (
+                    <div style={{width: '100%', height: '100vh', backgroundColor: '#000000'}}>
+                        <Icon name={"close"} size={"large"} inverted style={{float: "right", position: "relative", margin:'0.5em', zIndex:2}} link onClick={() => {this.setState({magImage: ""})}}/>
+                        <div style={{width: '100%', height: '100vh', display:'flex', justifyContent:'center', alignItems:'center', position: "absolute"}}>
+                            <Image src={this.state.magImage} style={{maxHeight: '100vh', maxWidth: '100%'}} />
+                        </div>
+                    </div>
+                )
+            }
+
+            return (
+                <div>
+                    <Navbar />
+                    <Grid divided style={{minHeight: 'calc(100vh - 66px)', maxHeight: 'calc(100vh - 66px)', position:"absolute"}} padded>
+                        <Grid.Column width={4} style={{maxHeight: 'inherit'}}>
+                            <Header className={"hoverPointer"} size={"huge"} textAlign={"center"} onClick={() => {this.setState({projectDetailsVisible: true})}}>{this.state.project['name']}</Header>
+                            <Card color={"purple"} fluid onClick={() => {this.setState({bugReport: -1})}} style={{padding: '1em', alignItems:'center'}}>
+                                <Header as='h4' style={{display: 'flex', alignItems: 'center'}}>
+                                    <Icon name='add' />
+                                    <Header.Content>New Report</Header.Content>
+                                </Header>
+                            </Card>
+                            <Segment style={{maxHeight: '87%' ,overflowY: 'scroll', backgroundColor: "#5c00b309"}} className={"scrollBar"}>
+                                <Header as={"h3"} textAlign={"center"}>Bugs<hr /></Header>
+                                <BugList slug={this.props.match.params.slug} onChange={this.handleChange} />
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column width={12} style={{overflowY: 'scroll', maxHeight: 'inherit'}} className={"scrollBar"}>
+                            <TheThirdPart stateIndex={this.state.bugReport} project={this.state.project['id']} onChange={this.handleChange} />
+                        </Grid.Column>
+                    </Grid>
+                    <ProjectInfo project={this.state.project} onChange={this.handleChange} isVisible={this.state.projectDetailsVisible} />
+                </div>
+            )
+        }else{
+            return (
+                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                    <Loader active size="medium" />
+                </div>
+            )
+        }
     }
 }
 

@@ -52,7 +52,7 @@ class Navbar extends React.Component{
                     <Sticky>
                         <Menu borderless inverted style={{borderRadius: '0'}}>
                             <Menu.Item>
-                                <a href={"/"}><Header size={"huge"} inverted>Chronicles</Header></a>
+                                <a href={"/"}><Header size={"medium"} inverted>Chronicles</Header></a>
                             </Menu.Item>
                             <Menu.Item position={"right"}>
                                 <Dropdown text={this.state.user} direction={"right"} floating item simple>
@@ -63,7 +63,7 @@ class Navbar extends React.Component{
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Menu.Item>
-                        </Menu><br/>
+                        </Menu>
                     </Sticky>
                 )
 
