@@ -9,6 +9,7 @@ import Landing from "./Landing"
 import Logger from "./logger"
 import ProjectHandler from "./projectHandler"
 import ProjectView from "./projectView";
+import PrototypeWebsocket from "./prototypeWebsocket";
 
 axios.defaults.baseURL = 'http://localhost:8000/'
 axios.defaults.xsrfCookieName = 'csrftoken'
@@ -18,6 +19,7 @@ axios.defaults.withCredentials = true
 ReactDOM.render((
     <Router>
         <Switch>
+            <Route path={"/prototypeWebSocket/"} component={PrototypeWebsocket} />
             <Route path={"/projects/:slug/"} component={ProjectView} />
             <Route path="/projects/" component={ProjectHandler} />
             <Route path="/login/" component={Login} />
