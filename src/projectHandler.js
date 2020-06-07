@@ -1,6 +1,10 @@
 import React from "react"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import CKeditor from "@ckeditor/ckeditor5-react"
+import UploadAdapter from "./uploadAdapter"
+import randomstring from 'randomstring'
 
-import {Container, Form, Loader, Header, TextArea, Dropdown, Button, Message} from 'semantic-ui-react'
+import {Container, Form, Loader, Header, Dropdown, Button, Message} from 'semantic-ui-react'
 
 import Navbar from "./navbar"
 import axios from "axios"
@@ -10,7 +14,7 @@ import slug from 'slug'
 class ProjectForm extends React.Component{
     constructor(props) {
         super(props)
-        this.state = {userListReceived: false, userList: [], creationSuccess: false, name:'', description:'', team: [], image: null, slug:'', errorStatus: false, errorMsg:''}
+        this.state = {userListReceived: false, userList: [], creationSuccess: false, name:'', description:'', team: [], image: null, slug:'', errorStatus: false, errorMsg:'', ckeditorURLS: [], randIdentifier: randomstring.generate()}
     }
 
     componentDidMount() {
@@ -59,6 +63,16 @@ class ProjectForm extends React.Component{
         }).catch((error) => {
             this.setState({errorStatus: true, errorMsg:error.response.data['slug']})
         })
+
+        const deleteData = new FormData()
+        deleteData.append('randIdentifier', this.state.randIdentifier)
+        deleteData.append('urls', this.state.ckeditorURLS)
+        axios.post('/images/deleteRem/', deleteData, config).then((response) => {
+            console.log("Success")
+        }).catch(err => {
+            console.log('failure')
+        })
+
     }
 
     render(){
@@ -98,7 +112,26 @@ class ProjectForm extends React.Component{
                     </Form.Field>
                     <Form.Field>
                         <label>Description</label>
-                        <TextArea placeholder={"Description of the project"} type={"text"} name={"description"} onChange={this.handleChange}/>
+                        {/*<TextArea placeholder={"Description of the project"} type={"text"} name={"description"} onChange={this.handleChange}/>*/}
+                        <CKeditor
+                            editor={ClassicEditor}
+                            onInit={editor=>{
+                                const randIdentifier = this.state.randIdentifier
+                                editor.plugins.get('FileRepository').createUploadAdapter = function(loader){
+                                    return new UploadAdapter(loader, randIdentifier)
+                                }
+                            }}
+                            onChange={(event, editor) => {
+                                const ckeditorURLS = Array.from( new DOMParser().parseFromString( editor.getData(), 'text/html' )
+                                        .querySelectorAll( 'img' ) )
+                                        .map( img => img.getAttribute( 'src' ) )
+                                this.setState({
+                                    description: editor.getData(),
+                                    ckeditorURLS: ckeditorURLS,
+                                })
+
+                            }}
+                        />
                     </Form.Field>
                     <Form.Field>
                         <label>Team Members</label>
@@ -108,7 +141,7 @@ class ProjectForm extends React.Component{
                         <label>Project Logo</label>
                         <input type={"file"} name={"image"} onChange={this.handleImage} accept={"image/png, image/jpeg, image/jpg"}/>
                     </Form.Field>
-                    <Button type={"submit"}>Create</Button>
+                    <Button type={"submit"}>Create</Button><br /><br />
                 </Form>
             )
         }else{

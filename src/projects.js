@@ -27,7 +27,6 @@ class Projects extends React.Component{
                                 <Image src={value['image']} wrapped ui={false} />
                                 <Card.Content>
                                     <Card.Header>{value['name']}</Card.Header>
-                                    <Card.Description>{value['description']}</Card.Description>
                                 </Card.Content>
                             </Card>
                         )
