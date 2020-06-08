@@ -40,6 +40,7 @@ class CommentHandler extends React.Component{
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(prevProps.report !== this.props.report){
+            this.setState({newCommentList: []})
             this.dockComment()
         }
 
