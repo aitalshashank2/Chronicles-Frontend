@@ -100,6 +100,7 @@ class ProjectForm extends React.Component{
 
             return (
                 <Form onSubmit={this.handleSubmit}>
+                    <br />
                     <Header size={"huge"}>New Project</Header>
                     {errorMessage}
                     <Form.Field>

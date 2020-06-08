@@ -37,18 +37,17 @@ class BugList extends React.Component{
                     {this.state.bugReports.map((value, index) => {
                         return (
                             <Card color={value['status'] ? 'green' : 'red'} fluid style={{padding: '0.5em', marginBottom: '0.25em', backgroundColor: "inherit"}} onClick={() => {this.props.onChange({bugReport: value['id']})}} key={index}>
-                                <Header size={"small"} style={{margin: 0}}>{value['heading']}</Header>
-                                <p style={{color:'grey', marginTop: '5px', marginBottom: '5px'}}>{value['description']}</p>
+                                <Header size={"small"}>{value['heading']}</Header>
                                 <div>
                                     {this.tagDeHash(value['tagsHash']).map((value1, index1) => {
                                         return (
-                                            <Label tag style={{backgroundColor: '#eaeffa', marginBottom: '5px'}}>{tagLegend[value1]}</Label>
+                                            <Label tag style={{backgroundColor: '#eaeffa', marginBottom: '5px'}} key={index1}>{tagLegend[value1]}</Label>
                                         )
                                     })}
                                 </div>
                             </Card>
                         )
-                    })}
+                    })}<br />
                 </CardGroup>
             )
         }else{

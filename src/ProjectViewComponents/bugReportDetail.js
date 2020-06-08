@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import {Header, Item, Label, Loader, Segment} from "semantic-ui-react";
 import {tagLegend} from "../projectView";
+import CommentHandler from "./commentHandler";
 
 class BugReportDetail extends React.Component{
     constructor(props) {
@@ -55,14 +56,13 @@ class BugReportDetail extends React.Component{
 
             return (
                 <div>
-                    <Segment raised style={{backgroundColor: (this.state.bugReportStatus ? '#e6ffe6':'#ffe6e6')}}>
+                    <Segment raised className={"hoverPointer"} style={{backgroundColor: (this.state.bugReportStatus ? '#e6ffe6':'#ffe6e6')}} onClick={() => this.props.onChange({bugDescription: this.state.bugReportDescription})}>
                         <Item.Group>
                             <Item>
                                 <Item.Content verticalAlign={'middle'}>
                                     <Item.Header style={{fontSize: '2em', lineHeight: '2.2em'}}>{this.state.bugReportHeading}</Item.Header>
                                     <Item.Meta>Reporter: {this.state.bugReportReporter['username']}</Item.Meta>
                                     <Item.Description>
-                                        {this.state.bugReportDescription}<br />
                                         <Header as={'h4'} style={{color: (this.state.bugReportPIC === null) ? 'red' : 'green'}}>
                                             Person in charge: {(this.state.bugReportPIC === null) ? "Not assigned" : this.state.bugReportPIC['username']}
                                         </Header>
@@ -71,7 +71,7 @@ class BugReportDetail extends React.Component{
                                         <div>
                                             {this.tagDeHash(this.state.bugReportTagHash).map((value1, index1) => {
                                                 return (
-                                                    <Label tag style={{backgroundColor: '#eaeffa', marginBottom:'1em'}}>{tagLegend[value1]}</Label>
+                                                    <Label tag style={{backgroundColor: '#eaeffa', marginBottom:'1em'}} key={index1}>{tagLegend[value1]}</Label>
                                                 )
                                             })}
                                         </div>
@@ -80,7 +80,7 @@ class BugReportDetail extends React.Component{
                             </Item>
                         </Item.Group>
                     </Segment>
-                    <Segment>Comments</Segment>
+                    <CommentHandler report={this.state.bugReportID} />
                 </div>
             )
         }else{

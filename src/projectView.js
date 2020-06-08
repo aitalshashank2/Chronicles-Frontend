@@ -3,7 +3,6 @@ import axios from "axios"
 import {
     Grid,
     Loader,
-    Image,
     Header,
     Segment,
     Card,
@@ -15,6 +14,8 @@ import Navbar from "./navbar"
 import ProjectInfo from "./ProjectViewComponents/projectInfo"
 import BugList from "./ProjectViewComponents/bugList"
 import TheThirdPart from "./ProjectViewComponents/theThirdPart"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import CKeditor from "@ckeditor/ckeditor5-react";
 
 export const tagLegend = [
     "Functionality",
@@ -46,7 +47,7 @@ class ProjectView extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {bugReport: 0, projectLoaded: false, magImage:""}
+        this.state = {bugReport: 0, projectLoaded: false, bugDescription:""}
     }
 
     componentDidMount() {
@@ -64,12 +65,22 @@ class ProjectView extends React.Component{
     render(){
 
         if(this.state.projectLoaded){
-            if(this.state.magImage !== ""){
+            if(this.state.bugDescription !== ""){
                 return (
                     <div style={{width: '100%', height: '100vh', backgroundColor: '#000000'}}>
-                        <Icon name={"close"} size={"large"} inverted style={{float: "right", position: "relative", margin:'0.5em', zIndex:2}} link onClick={() => {this.setState({magImage: ""})}}/>
+                        <Icon name={"close"} size={"large"} inverted style={{float: "right", position: "relative", margin:'0.5em', zIndex:2}} link onClick={() => {this.setState({bugDescription: ""})}}/>
                         <div style={{width: '100%', height: '100vh', display:'flex', justifyContent:'center', alignItems:'center', position: "absolute"}}>
-                            <Image src={this.state.magImage} style={{maxHeight: '100vh', maxWidth: '100%'}} />
+                            <CKeditor
+                            editor={ClassicEditor}
+                            data={this.state.bugDescription}
+                            disabled={true}
+                            config={
+                                {
+                                    toolbar: [],
+                                    isReadOnly: true,
+                                }
+                            }
+                        />
                         </div>
                     </div>
                 )
