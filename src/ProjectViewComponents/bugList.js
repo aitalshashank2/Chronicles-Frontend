@@ -11,7 +11,7 @@ class BugList extends React.Component{
     }
 
     componentDidMount() {
-        axios.get('/projects/'+this.props.slug+'/bugReports/').then((response) => {
+        axios.get('/projects/'+this.props.project['id']+'/bugReports/').then((response) => {
             this.setState({loadBugReports: true, bugReports: response.data})
         }).catch((error) => {
             this.setState({loadBugReports: false})

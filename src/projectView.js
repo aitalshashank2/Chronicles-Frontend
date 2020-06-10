@@ -47,7 +47,7 @@ class ProjectView extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {bugReport: 0, projectLoaded: false, bugDescription:""}
+        this.state = {bugReport: 0, projectLoaded: false, bugReportDetail:null, user:null, getUser:false}
     }
 
     componentDidMount() {
@@ -56,6 +56,20 @@ class ProjectView extends React.Component{
         }).catch((error) => {
             this.setState({projectLoaded: false})
         })
+
+        axios.get('/users/curr/').then(res => {
+            this.setState({user: res.data, getUser: true})
+        }).catch(err => {
+            this.setState({user: "Anon"})
+        })
+    }
+
+    isAdminOrTeamMember = () => {
+        if(this.state.user['isAdmin'] || this.state.project['team'].includes(this.state.user['id'])){
+            return true
+        }else{
+            return false
+        }
     }
 
     handleChange = (childState) => {
@@ -64,23 +78,23 @@ class ProjectView extends React.Component{
 
     render(){
 
-        if(this.state.projectLoaded){
-            if(this.state.bugDescription !== ""){
+        if(this.state.projectLoaded && this.state.getUser){
+            if(this.state.bugReportDetail !== null){
                 return (
                     <div style={{width: '100%', height: '100vh', backgroundColor: '#000000'}}>
-                        <Icon name={"close"} size={"large"} inverted style={{float: "right", position: "relative", margin:'0.5em', zIndex:2}} link onClick={() => {this.setState({bugDescription: ""})}}/>
+                        <Icon name={"close"} size={"large"} inverted style={{float: "right", position: "relative", margin:'0.5em', zIndex:2}} link onClick={() => {this.setState({bugReportDetail: null})}}/>
                         <div style={{width: '100%', height: '100vh', display:'flex', justifyContent:'center', alignItems:'center', position: "absolute"}}>
                             <CKeditor
-                            editor={ClassicEditor}
-                            data={this.state.bugDescription}
-                            disabled={true}
-                            config={
-                                {
-                                    toolbar: [],
-                                    isReadOnly: true,
+                                editor={ClassicEditor}
+                                data={this.state.bugReportDetail['description']}
+                                disabled={true}
+                                config={
+                                    {
+                                        toolbar: [],
+                                        isReadOnly: true,
+                                    }
                                 }
-                            }
-                        />
+                            />
                         </div>
                     </div>
                 )
@@ -100,14 +114,14 @@ class ProjectView extends React.Component{
                             </Card>
                             <Segment style={{maxHeight: '87%' ,overflowY: 'scroll', backgroundColor: "#5c00b309"}} className={"scrollBar"}>
                                 <Header as={"h3"} textAlign={"center"}>Bugs<hr /></Header>
-                                <BugList slug={this.props.match.params.slug} onChange={this.handleChange} />
+                                <BugList project={this.state.project} onChange={this.handleChange} />
                             </Segment>
                         </Grid.Column>
                         <Grid.Column width={12} style={{overflowY: 'scroll', maxHeight: 'inherit'}} className={"scrollBar"}>
-                            <TheThirdPart stateIndex={this.state.bugReport} project={this.state.project['id']} onChange={this.handleChange} />
+                            <TheThirdPart stateIndex={this.state.bugReport} project={this.state.project['id']} onChange={this.handleChange} canEdit={this.isAdminOrTeamMember()} />
                         </Grid.Column>
                     </Grid>
-                    <ProjectInfo project={this.state.project} onChange={this.handleChange} isVisible={this.state.projectDetailsVisible} />
+                    <ProjectInfo project={this.state.project} onChange={this.handleChange} isVisible={this.state.projectDetailsVisible} canEdit={this.isAdminOrTeamMember()} />
                 </div>
             )
         }else{

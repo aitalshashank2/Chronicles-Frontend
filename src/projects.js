@@ -23,7 +23,7 @@ class Projects extends React.Component{
                 <CardGroup itemsPerRow={4}>
                     {this.state.proj.map((value, index) => {
                         return (
-                            <Card color="purple" href={"/projects/"+value['slug']} key={index}>
+                            <Card color="purple" href={"/projects/"+value['slug']+"/"} key={index}>
                                 <Image src={value['image']} wrapped ui={false} />
                                 <Card.Content>
                                     <Card.Header>{value['name']}</Card.Header>

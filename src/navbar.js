@@ -12,7 +12,7 @@ class Navbar extends React.Component{
     componentDidMount() {
         axios.get('/users/curr/').then(
             (response) => {
-                this.setState({user: response.data.user, responseRec: true, loggedin:true})
+                this.setState({user: response.data.username, responseRec: true, loggedin:true})
             }
         ).catch(error => {
             this.setState({responseRec: true})

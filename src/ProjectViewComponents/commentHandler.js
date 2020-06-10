@@ -83,7 +83,7 @@ class CommentHandler extends React.Component{
             )
         }else{
             commentList = (
-                <div style={{height: '58vh', overflowY: "scroll"}} className={"scrollBar"}>
+                <div style={{height: '51vh', overflowY: "scroll"}} className={"scrollBar"}>
                     {this.state.comments.map((value, index) => {
                         return (
                             <Segment vertical>
@@ -106,12 +106,12 @@ class CommentHandler extends React.Component{
         }
 
         return (
-            <Segment style={{height: '67vh'}}>
+            <Segment style={{height: '60vh'}}>
                 {commentList}<hr />
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group>
                         <Form.Input width={14} value={this.state.commentData} onChange={this.handleChange} />
-                        <Form.Button content={"Submit"} fluid width={2} />
+                        <Form.Button content={"Send"} fluid width={2} />
                     </Form.Group>
                 </Form>
             </Segment>

@@ -24,7 +24,7 @@ class TheThirdPart extends React.Component{
             )
         }else if(this.props.stateIndex > 0){
             return (
-                <BugReportDetail bugReport={this.props.stateIndex} onChange={this.handleRedirect} />
+                <BugReportDetail project={this.props.project} bugReport={this.props.stateIndex} onChange={this.handleRedirect} canEdit={this.props.canEdit} />
             )
         }else{
             return (
