@@ -115,7 +115,7 @@ class BugReportDetail extends React.Component{
 
             return (
                 <div>
-                    <Segment raised style={{backgroundColor: (this.state.bugReportStatus ? '#e6ffe6':'#ffe6e6'), maxHeight: '30vh', overflowY: "scroll"}} className={"scrollBar"} >
+                    <Segment raised style={{backgroundColor: (this.state.bugReportStatus ? '#e6ffe6':'#ffe6e6'), height: '25vh', overflowY: "scroll"}} className={"scrollBar"} >
                         <Item.Group>
                             <Item>
                                 <Item.Content verticalAlign={'middle'}>
@@ -141,8 +141,6 @@ class BugReportDetail extends React.Component{
                 </div>
             )
         }else{
-            console.log(this.state.bugReport)
-            console.log(this.state.usersReceived)
             return (
                 <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
                     <Loader active size={"medium"} />
