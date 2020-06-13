@@ -3,7 +3,7 @@ import axios from "axios"
 import {Redirect} from 'react-router-dom'
 
 import Navbar from "./navbar"
-import {Loader, Container, Header ,List, Button, Image, Checkbox} from "semantic-ui-react";
+import {Loader, Container, Header ,List, Image, Checkbox} from "semantic-ui-react";
 
 class AdminView extends React.Component{
     constructor(props) {

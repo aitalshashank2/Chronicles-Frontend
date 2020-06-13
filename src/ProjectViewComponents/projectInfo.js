@@ -68,9 +68,19 @@ class ProjectInfo extends React.Component{
         })
     }
 
+    handleDelete = () => {
+        if(this.props.canEdit){
+            axios.delete('/projects/'+this.props.project['slug']+'/').then(res=>{
+                window.location = "/"
+            }).catch(err => {
+                console.log("Failed to delete")
+            })
+        }
+    }
+
     render(){
 
-        let teamInfo, projectLogo, customEditor
+        let teamInfo, projectLogo, customEditor, deleteOption
         if(this.state.loadTeam && this.state.loadUsers){
             const userOptions = this.state.allUsers.map((val, index) => ({
                 key: val['id'],
@@ -140,6 +150,11 @@ class ProjectInfo extends React.Component{
                     }}
                 />
             )
+            deleteOption = (
+                <div style={{textAlign: "center", width: "100%"}}>
+                    <Button inverted color={"red"} onClick={this.handleDelete}>Delete</Button><hr />
+                </div>
+            )
         }else{
             customEditor = (
                 <CKeditor
@@ -180,6 +195,7 @@ class ProjectInfo extends React.Component{
                             <Image wrapped src={this.props.project['image']} bordered /><hr />
                             {projectLogo}<hr />
                             {teamInfo}<hr />
+                            {deleteOption}
                             {canSubmit}
                         </div>
                     </Grid.Column>

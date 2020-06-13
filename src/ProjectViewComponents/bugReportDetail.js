@@ -13,7 +13,6 @@ class BugReportDetail extends React.Component{
 
     dockBugReport = () => {
         axios.get('/bugReports/'+this.props.bugReport+'/').then((response) => {
-            console.log(response.data)
             this.setState({
                 bugReportReceived: true,
                 bugReport: response.data,
@@ -82,6 +81,14 @@ class BugReportDetail extends React.Component{
         })
     }
 
+    handleDelete = () => {
+        axios.delete('/bugReports/'+this.state.bugReportID+'/').then(res => {
+            this.props.onChange({bugReport: 0})
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     render(){
         if(this.state.bugReportReceived && this.state.usersReceived){
             const userOptions = this.state.allMembers.map((val, index) => ({
@@ -89,7 +96,7 @@ class BugReportDetail extends React.Component{
                 text: val['username'],
                 value: val['id'],
             }))
-            let PIC, statusDesc, patchButton
+            let PIC, statusDesc, patchButton, deleteButton
             if(this.props.canEdit){
                 PIC = (
                     <Dropdown value={this.state.changedPersonInCharge} style={{margin: '0.5em'}} placeholder={"Person in Charge"} search selection options={userOptions} onChange={this.handlePersonInCharge} />
@@ -100,10 +107,21 @@ class BugReportDetail extends React.Component{
                         <Checkbox slider value={this.state.changedStatus} checked={this.state.changedStatus} onChange={this.handleStatus} />
                     </div>
                 )
-                if((this.state.bugReportPIC !== this.state.changedPersonInCharge) || (this.state.bugReportStatus !== this.state.changedStatus)){
-                    patchButton = (
-                        <Button primary content={"Submit"} onClick={this.handlePatch} />
-                    )
+                deleteButton = (
+                    <Button color={"red"} onClick={this.handleDelete}>Delete</Button>
+                )
+                if(this.state.bugReportPIC===null){
+                    if((this.state.changedPersonInCharge !== null) || (this.state.bugReportStatus !== this.state.changedStatus)){
+                        patchButton = (
+                            <Button primary content={"Submit"} onClick={this.handlePatch} />
+                        )
+                    }
+                }else{
+                    if((this.state.changedPersonInCharge !== this.state.bugReportPIC['id']) || (this.state.bugReportStatus !== this.state.changedStatus)){
+                        patchButton = (
+                            <Button primary content={"Submit"} onClick={this.handlePatch} />
+                        )
+                    }
                 }
             }else{
                 PIC = (
@@ -122,7 +140,7 @@ class BugReportDetail extends React.Component{
                                     <Item.Header className={"hoverPointer"} style={{fontSize: '2em', lineHeight: '2.2em'}} onClick={() => this.props.onChange({bugReportDetail: this.state.bugReport})}>{this.state.bugReportHeading}</Item.Header>
                                     <Item.Meta>Reporter: {this.state.bugReportReporter['username']}</Item.Meta>
                                     <Item.Description>
-                                        {PIC}{statusDesc}{patchButton}
+                                        {PIC}{statusDesc}{patchButton}{deleteButton}
                                     </Item.Description><br />
                                     <Item.Extra>
                                         <div>

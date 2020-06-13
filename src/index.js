@@ -9,7 +9,8 @@ import Landing from "./Landing"
 import Logger from "./logger"
 import ProjectHandler from "./projectHandler"
 import ProjectView from "./projectView"
-import AdminView from "./adminView";
+import AdminView from "./adminView"
+import MyChores from "./myChores"
 
 axios.defaults.baseURL = 'http://localhost:8000/'
 axios.defaults.xsrfCookieName = 'csrftoken'
@@ -19,6 +20,7 @@ axios.defaults.withCredentials = true
 ReactDOM.render((
     <Router>
         <Switch>
+            <Route exact path={"/my_chores/"} component={MyChores} />
             <Route exact path={"/admin/"} component={AdminView} />
             <Route exact path={"/projects/:slug/"} component={ProjectView} />
             <Route exact path={"/projects/"} component={ProjectHandler} />

@@ -22,14 +22,14 @@ class Navbar extends React.Component{
     logout = () => {
         axios.get('/users/logout/').then(
             (response) => {
-                this.setState({loggedin:false, add:false, profile:false})
+                this.setState({loggedin:false, add:false, my_chores:false})
             }
         )
     }
 
     handleDropDown = (event, data) => {
-        if(data.value === "profile"){
-            this.setState({profile: true})
+        if(data.value === "my_chores"){
+            this.setState({my_chores: true})
         }else if(data.value === "add"){
             this.setState({add:true})
         }else if(data.value === "adminView"){
@@ -42,8 +42,8 @@ class Navbar extends React.Component{
             if(!this.state.loggedin){
                 return <Redirect to="/login/" />
             }else{
-                if(this.state.profile){
-                    return <Redirect to={"/profile/"} />
+                if(this.state.my_chores){
+                    return <Redirect to={"/my_chores/"} />
                 }
 
                 if(this.state.add){
@@ -74,7 +74,7 @@ class Navbar extends React.Component{
                                 <Dropdown text={this.state.user['username']} direction={"right"} floating item simple style={{minWidth: '9.2em'}}>
                                     <Dropdown.Menu>
                                         {adminButton}
-                                        <Dropdown.Item icon={"user"} text={"Profile"} value={"profile"} onClick={this.handleDropDown}/>
+                                        <Dropdown.Item icon={"user"} text={"My Chores"} value={"my_chores"} onClick={this.handleDropDown}/>
                                         <Dropdown.Item icon={"plus"} text={"New Project"} value={"add"} onClick={this.handleDropDown}/>
                                         <Dropdown.Item icon={"sign-out"} onClick={this.logout} text={"Logout"} />
                                     </Dropdown.Menu>
