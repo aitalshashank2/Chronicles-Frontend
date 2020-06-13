@@ -64,10 +64,10 @@ class MyChoresBugList extends React.Component{
     render(){
         if(this.state.bugsLoad){
             return (
-                <Card.Group>
+                <Card.Group itemsPerRow={2}>
                     {this.state.bugs.map((value, index) => {
                         return (
-                            <Card color={value['status'] ? "green" : "red"} fluid href={"/projects/"+value['project']['slug']+'/'} key={index}>
+                            <Card color={value['status'] ? "green" : "red"} href={"/projects/"+value['project']['slug']+'/'} key={index}>
                                 <Card.Content>
                                     <Card.Header>{value['heading']}</Card.Header>
                                     <Card.Meta>{value['reporter']['username']}</Card.Meta>

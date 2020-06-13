@@ -3,6 +3,7 @@ import cookie from 'react-cookies'
 import randomstring from 'randomstring'
 import {Redirect} from 'react-router-dom'
 import axios from "axios"
+import projectLogo from "./projectLogo.gif"
 
 import {Button, Menu, Header, Container} from "semantic-ui-react"
 
@@ -44,9 +45,13 @@ class Login extends React.Component{
                             </a>
                         </Menu.Item>
                     </Menu>
-                    <Container>
-                        <Header size={"large"}>Chronicles</Header>
-                    </Container>
+                    <div style={{display:"flex", alignItems: "center", justifyContent: "center", height: '90vh', width: '100%'}}>
+                        <div>
+                            <img src={projectLogo} type={"image/gif"} />
+                            <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} style={{marginBottom: '0'}}/>
+                            <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} style={{marginTop: '0'}}/>
+                        </div>
+                    </div>
                 </div>
             )
         }else{
