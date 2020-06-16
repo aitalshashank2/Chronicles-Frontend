@@ -61,7 +61,7 @@ class ProjectForm extends React.Component{
         axios.post(url, formdata, config).then((response) => {
             this.setState({creationSuccess: true})
         }).catch((error) => {
-            this.setState({errorStatus: true, errorMsg:error.response.data['slug']})
+            this.setState({errorStatus: true, errorMsg:error.response.data})
         })
 
         const deleteData = new FormData()
@@ -91,8 +91,17 @@ class ProjectForm extends React.Component{
 
             let errorMessage
             if(this.state.errorStatus){
+                let innerErrorMessage = (
+                    <div>
+                        {Object.keys(this.state.errorMsg).map((key) => {
+                            return (
+                                <p><b>{key}: </b>{this.state.errorMsg[key]}</p>
+                            )
+                        })}
+                    </div>
+                )
                 errorMessage = (
-                    <Message negative>{this.state.errorMsg}</Message>
+                    <Message negative>{innerErrorMessage}</Message>
                 )
             }else{
                 errorMessage = (<div style={{display: 'none'}} />)
@@ -103,15 +112,15 @@ class ProjectForm extends React.Component{
                     <br />
                     <Header size={"huge"}>New Project</Header>
                     {errorMessage}
-                    <Form.Field>
+                    <Form.Field required>
                         <label>Name</label>
                         <input placeholder={"Name of project"} type={"text"} name={"name"} onChange={this.handleChange}/>
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field required>
                         <label>Slug</label>
                         <input placeholder={"slug"} type={"text"} name={"slug"} onChange={this.handleChange} defaultValue={slug(this.state.name)} />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field required>
                         <label>Description</label>
                         {/*<TextArea placeholder={"Description of the project"} type={"text"} name={"description"} onChange={this.handleChange}/>*/}
                         <CKeditor
@@ -134,11 +143,11 @@ class ProjectForm extends React.Component{
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field required>
                         <label>Team Members</label>
                         <Dropdown placeholder={"Team Members"} fluid multiple search selection options={userOptions} onChange={this.handleDropDown}/>
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field required>
                         <label>Project Logo</label>
                         <input type={"file"} name={"image"} onChange={this.handleImage} accept={"image/png, image/jpeg, image/jpg"}/>
                     </Form.Field>

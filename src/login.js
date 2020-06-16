@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom'
 import axios from "axios"
 import projectLogo from "./projectLogo.gif"
 
-import {Button, Menu, Header, Container} from "semantic-ui-react"
+import {Button, Menu, Header} from "semantic-ui-react"
 
 class Login extends React.Component{
 
@@ -47,7 +47,7 @@ class Login extends React.Component{
                     </Menu>
                     <div style={{display:"flex", alignItems: "center", justifyContent: "center", height: '90vh', width: '100%'}}>
                         <div>
-                            <img src={projectLogo} type={"image/gif"} />
+                            <img src={projectLogo} type={"image/gif"} alt={"Chronicles"} />
                             <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} style={{marginBottom: '0'}}/>
                             <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} style={{marginTop: '0'}}/>
                         </div>

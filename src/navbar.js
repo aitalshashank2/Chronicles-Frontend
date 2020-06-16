@@ -60,8 +60,6 @@ class Navbar extends React.Component{
                     adminButton = (
                         <Dropdown.Item icon={"spy"} text={"Admin"} value={"adminView"} onClick={this.handleDropDown} />
                     )
-                }else{
-                    console.log("not Admin")
                 }
 
                 return (

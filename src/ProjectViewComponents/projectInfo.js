@@ -184,7 +184,7 @@ class ProjectInfo extends React.Component{
 
         return (
 
-            <div style={{zIndex:1, position:"relative", backgroundColor:"#00000099", display: (this.props.isVisible ? "block" : "none")}}>
+            <div style={{zIndex:10, position:"relative", backgroundColor:"#00000099", display: (this.props.isVisible ? "block" : "none")}}>
                 <Grid divided style={{minHeight: 'calc(100vh - 66px)', maxHeight: 'calc(100vh - 66px)'}} padded>
                     <Grid.Column width={4} style={{overflowY: 'scroll', maxHeight: 'inherit', backgroundColor:"#000000"}} className={"scrollBar"}>
                         <div>
@@ -199,8 +199,10 @@ class ProjectInfo extends React.Component{
                             {canSubmit}
                         </div>
                     </Grid.Column>
-                    <Grid.Column width={12} style={{overflowY: 'scroll', maxHeight: 'inherit', display: 'flex', alignItems:'center', justifyContent:'center'}} className={"scrollBar"}>
-                        {customEditor}
+                    <Grid.Column width={12} style={{height: "inherit", display:"flex", alignItems: "center", justifyContent: "center"}}>
+                        <div style={{overflowY: 'scroll', maxHeight: "90vh"}}>
+                            {customEditor}
+                        </div>
                     </Grid.Column>
                 </Grid>
             </div>

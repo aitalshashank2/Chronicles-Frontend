@@ -32,6 +32,15 @@ class BugList extends React.Component{
 
     render(){
         if(this.state.loadBugReports){
+
+            if(this.state.bugReports.length === 0){
+                return (
+                    <div style={{textAlign: "center"}}>
+                        <p style={{color: "grey"}}>No Reports as of now!</p>
+                    </div>
+                )
+            }
+
             return (
                 <CardGroup>
                     {this.state.bugReports.map((value, index) => {

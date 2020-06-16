@@ -14,7 +14,7 @@ class TheThirdPart extends React.Component{
             return (
                 <div style={{display:"flex", alignItems: "center", justifyContent: "center", height: '100%', width: '100%'}}>
                     <div>
-                        <img src={logo} type={"image/gif"} style={{width: '15em'}} />
+                        <img src={logo} type={"image/gif"} style={{width: '15em'}} alt={"Chronicles"} />
                         <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} style={{marginBottom: '0'}}/>
                         <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} style={{marginTop: '0'}}/>
                     </div>

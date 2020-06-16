@@ -23,6 +23,15 @@ class MyChoresProjectList extends React.Component{
 
     render(){
         if(this.state.userProjectsLoaded){
+
+            if(this.state.userProjects.length === 0){
+                return (
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
+                        <p style={{color: "grey"}}>You are not a member of any projects 😥</p>
+                    </div>
+                )
+            }
+
             return (
                 <CardGroup itemsPerRow={3}>
                     {this.state.userProjects.map((value, index) => {
@@ -63,6 +72,15 @@ class MyChoresBugList extends React.Component{
 
     render(){
         if(this.state.bugsLoad){
+
+            if(this.state.bugs.length === 0){
+                return (
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
+                        <p style={{color: "grey"}}>No bug reports to fix! 🖖</p>
+                    </div>
+                )
+            }
+
             return (
                 <Card.Group itemsPerRow={2}>
                     {this.state.bugs.map((value, index) => {

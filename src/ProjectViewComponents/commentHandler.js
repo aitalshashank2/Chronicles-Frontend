@@ -82,27 +82,37 @@ class CommentHandler extends React.Component{
                 </div>
             )
         }else{
-            commentList = (
-                <div style={{height: '55vh', overflowY: "scroll"}} className={"scrollBar"}>
-                    {this.state.comments.map((value, index) => {
-                        return (
-                            <Segment vertical>
-                                <Header size={"small"} style={{margin: 0, color:"#400080"}}>{value['commenter']['username']}</Header>
-                                <p>{value['body']}</p>
-                            </Segment>
-                        )
-                    })}
-                    {this.state.newCommentList.map((value, index) => {
-                        return (
-                            <Segment vertical>
-                                <Header size={"small"} style={{margin: 0, color:"#400080"}}>{value['commenter']['username']}</Header>
-                                <p>{value['body']}</p>
-                            </Segment>
-                        )
-                    })}
-                    <div style={{float:"left", clear: "both"}} ref={(el) => this.commentsEnd = el} />
-                </div>
-            )
+
+            if(this.state.comments.length === 0 && this.state.newCommentList.length === 0){
+                commentList = (
+                    <div style={{height: "55vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                        <p style={{color: "grey"}}>Be the first one to comment</p>
+                        <div style={{float:"left", clear: "both"}} ref={(el) => this.commentsEnd = el} />
+                    </div>
+                )
+            }else{
+                commentList = (
+                    <div style={{height: '55vh', overflowY: "scroll"}} className={"scrollBar"}>
+                        {this.state.comments.map((value, index) => {
+                            return (
+                                <Segment vertical>
+                                    <Header size={"small"} style={{margin: 0, color:"#400080"}}>{value['commenter']['username']}</Header>
+                                    <p>{value['body']}</p>
+                                </Segment>
+                            )
+                        })}
+                        {this.state.newCommentList.map((value, index) => {
+                            return (
+                                <Segment vertical>
+                                    <Header size={"small"} style={{margin: 0, color:"#400080"}}>{value['commenter']['username']}</Header>
+                                    <p>{value['body']}</p>
+                                </Segment>
+                            )
+                        })}
+                        <div style={{float:"left", clear: "both"}} ref={(el) => this.commentsEnd = el} />
+                    </div>
+                )
+            }
         }
 
         return (
