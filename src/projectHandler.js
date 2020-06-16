@@ -49,7 +49,9 @@ class ProjectForm extends React.Component{
         this.state.team.forEach((value) => {
             formdata.append('team', value)
         })
-        formdata.append('image', this.state.image)
+        if(this.state.image !== null){
+            formdata.append('image', this.state.image)
+        }
         formdata.append('slug', this.state.slug)
 
         const config = {
@@ -147,7 +149,7 @@ class ProjectForm extends React.Component{
                         <label>Team Members</label>
                         <Dropdown placeholder={"Team Members"} fluid multiple search selection options={userOptions} onChange={this.handleDropDown}/>
                     </Form.Field>
-                    <Form.Field required>
+                    <Form.Field>
                         <label>Project Logo</label>
                         <input type={"file"} name={"image"} onChange={this.handleImage} accept={"image/png, image/jpeg, image/jpg"}/>
                     </Form.Field>

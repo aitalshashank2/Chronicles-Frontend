@@ -50,7 +50,7 @@ class BugList extends React.Component{
                                 <div>
                                     {this.tagDeHash(value['tagsHash']).map((value1, index1) => {
                                         return (
-                                            <Label tag style={{backgroundColor: '#eaeffa', marginBottom: '5px'}} key={index1}>{tagLegend[value1]}</Label>
+                                            <Label tag style={{backgroundColor: '#3d0099', marginBottom: '5px', color: "white"}} key={index1}>{tagLegend[value1]}</Label>
                                         )
                                     })}
                                 </div>

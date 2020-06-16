@@ -200,7 +200,7 @@ class ProjectInfo extends React.Component{
                         </div>
                     </Grid.Column>
                     <Grid.Column width={12} style={{height: "inherit", display:"flex", alignItems: "center", justifyContent: "center"}}>
-                        <div style={{overflowY: 'scroll', maxHeight: "90vh"}}>
+                        <div style={{overflowY: 'scroll', maxHeight: "90vh", overflowX: 'hidden'}}>
                             {customEditor}
                         </div>
                     </Grid.Column>

@@ -121,7 +121,7 @@ class CommentHandler extends React.Component{
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group>
                         <Form.Input width={14} value={this.state.commentData} onChange={this.handleChange} />
-                        <Form.Button content={"Send"} fluid width={2} />
+                        <Form.Button color={"purple"} content={"Send"} fluid width={2} />
                     </Form.Group>
                 </Form>
             </Segment>

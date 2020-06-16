@@ -14,8 +14,6 @@ import Navbar from "./navbar"
 import ProjectInfo from "./ProjectViewComponents/projectInfo"
 import BugList from "./ProjectViewComponents/bugList"
 import TheThirdPart from "./ProjectViewComponents/theThirdPart"
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import CKeditor from "@ckeditor/ckeditor5-react";
 
 export const tagLegend = [
     "Functionality",
@@ -47,7 +45,7 @@ class ProjectView extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {bugReport: 0, projectLoaded: false, bugReportDetail:null, user:null, getUser:false}
+        this.state = {bugReport: 0, projectLoaded: false, user:null, getUser:false}
     }
 
     componentDidMount() {
@@ -79,40 +77,19 @@ class ProjectView extends React.Component{
     render(){
 
         if(this.state.projectLoaded && this.state.getUser){
-            if(this.state.bugReportDetail !== null){
-                return (
-                    <div style={{width: '100%', height: '100vh', backgroundColor: '#000000'}}>
-                        <Icon name={"close"} size={"large"} inverted style={{float: "right", position: "relative", margin:'0.5em', zIndex:2}} link onClick={() => {this.setState({bugReportDetail: null})}}/>
-                        <div style={{width: '100%', height: '100vh', display:'flex', justifyContent:'center', alignItems:'center', position: "absolute"}}>
-                            <CKeditor
-                                editor={ClassicEditor}
-                                data={this.state.bugReportDetail['description']}
-                                disabled={true}
-                                config={
-                                    {
-                                        toolbar: [],
-                                        isReadOnly: true,
-                                    }
-                                }
-                            />
-                        </div>
-                    </div>
-                )
-            }
-
             return (
                 <div>
                     <Navbar />
                     <Grid divided style={{minHeight: 'calc(100vh - 66px)', maxHeight: 'calc(100vh - 66px)', position:"absolute"}} padded>
                         <Grid.Column width={4} style={{maxHeight: 'inherit'}}>
-                            <Header className={"hoverPointer"} size={"huge"} textAlign={"center"} onClick={() => {this.setState({projectDetailsVisible: true})}}>{this.state.project['name']}</Header>
+                            <Header style={{color: "#290066"}} className={"hoverPointer"} size={"huge"} textAlign={"center"} onClick={() => {this.setState({projectDetailsVisible: true})}}>{this.state.project['name']}</Header>
                             <Card color={"purple"} fluid onClick={() => {this.setState({bugReport: -1})}} style={{padding: '1em', alignItems:'center'}}>
                                 <Header as='h4' style={{display: 'flex', alignItems: 'center'}}>
                                     <Icon name='add' />
                                     <Header.Content>New Report</Header.Content>
                                 </Header>
                             </Card>
-                            <Segment style={{maxHeight: '87%' ,overflowY: 'scroll', backgroundColor: "#5c00b309"}} className={"scrollBar"}>
+                            <Segment style={{maxHeight: '87%' ,overflowY: 'scroll', backgroundColor: "#6600ff0f"}} className={"scrollBar"}>
                                 <Header as={"h3"} textAlign={"center"}>Bugs<hr /></Header>
                                 <BugList project={this.state.project} onChange={this.handleChange} />
                             </Segment>

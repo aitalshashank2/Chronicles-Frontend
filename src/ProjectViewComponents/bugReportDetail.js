@@ -1,14 +1,16 @@
-import React from "react";
-import axios from "axios";
-import {Header, Item, Label, Loader, Segment, Checkbox, Button} from "semantic-ui-react";
-import {tagLegend} from "../projectView";
-import CommentHandler from "./commentHandler";
-import {Dropdown} from "semantic-ui-react";
+import React from "react"
+import axios from "axios"
+import {Header, Item, Label, Loader, Segment, Checkbox, Button} from "semantic-ui-react"
+import {tagLegend} from "../projectView"
+import CommentHandler from "./commentHandler"
+import {Dropdown, Modal} from "semantic-ui-react"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import CKeditor from "@ckeditor/ckeditor5-react"
 
 class BugReportDetail extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {bugReportReceived: false, usersReceived: false, changedPersonInCharge: null}
+        this.state = {bugReportReceived: false, usersReceived: false, changedPersonInCharge: null, errorInSub: null}
     }
 
     dockBugReport = () => {
@@ -74,11 +76,17 @@ class BugReportDetail extends React.Component{
         data.append('person_in_charge', this.state.changedPersonInCharge)
         data.append('status', this.state.changedStatus)
 
-        axios.patch('/bugReports/'+this.state.bugReportID+'/', data).then(res=>{
-            this.dockBugReport()
-        }).catch(err=>{
-            console.log("Failure")
-        })
+        if(this.state.changedPersonInCharge === null){
+            this.setState({errorInSub: "There must be a person in charge before changing the status of bug report."})
+        }else{
+
+            axios.patch('/bugReports/'+this.state.bugReportID+'/', data).then(res=>{
+                this.dockBugReport()
+            }).catch(err=>{
+                console.log("Failure")
+            })
+
+        }
     }
 
     handleDelete = () => {
@@ -96,7 +104,7 @@ class BugReportDetail extends React.Component{
                 text: val['username'],
                 value: val['id'],
             }))
-            let PIC, statusDesc, patchButton, deleteButton
+            let PIC, statusDesc, patchButton, deleteButton, errorMessage
             if(this.props.canEdit){
                 PIC = (
                     <Dropdown value={this.state.changedPersonInCharge} style={{margin: '0.5em'}} placeholder={"Person in Charge"} search selection options={userOptions} onChange={this.handlePersonInCharge} />
@@ -131,22 +139,42 @@ class BugReportDetail extends React.Component{
                 )
             }
 
+            errorMessage = (
+                <p style={{color: "red"}}>{this.state.errorInSub}</p>
+            )
+
             return (
                 <div>
                     <Segment raised style={{backgroundColor: (this.state.bugReportStatus ? '#e6ffe6':'#ffe6e6'), height: '25vh', overflowY: "scroll"}} className={"scrollBar"} >
                         <Item.Group>
                             <Item>
                                 <Item.Content verticalAlign={'middle'}>
-                                    <Item.Header className={"hoverPointer"} style={{fontSize: '2em', lineHeight: '2.2em'}} onClick={() => this.props.onChange({bugReportDetail: this.state.bugReport})}>{this.state.bugReportHeading}</Item.Header>
+                                    <Modal trigger={<Item.Header className={"hoverPointer"} style={{fontSize: '2em', lineHeight: '2.2em'}}>{this.state.bugReportHeading}</Item.Header>}>
+                                        <Modal.Content>
+                                            <Modal.Description>
+                                                <CKeditor
+                                                    editor={ClassicEditor}
+                                                    data={this.state.bugReportDescription}
+                                                    disabled={true}
+                                                    config={
+                                                        {
+                                                            toolbar: [],
+                                                            isReadOnly: true,
+                                                        }
+                                                    }
+                                                />
+                                            </Modal.Description>
+                                        </Modal.Content>
+                                    </Modal>
                                     <Item.Meta>Reporter: {this.state.bugReportReporter['username']}</Item.Meta>
                                     <Item.Description>
-                                        {PIC}{statusDesc}{patchButton}{deleteButton}
+                                        {PIC}{statusDesc}{patchButton}{deleteButton}{errorMessage}
                                     </Item.Description><br />
                                     <Item.Extra>
                                         <div>
                                             {this.tagDeHash(this.state.bugReportTagHash).map((value1, index1) => {
                                                 return (
-                                                    <Label tag style={{backgroundColor: '#eaeffa', marginBottom:'1em'}} key={index1}>{tagLegend[value1]}</Label>
+                                                    <Label tag style={{backgroundColor: '#3d0099', marginBottom:'1em', color: "white"}} key={index1}>{tagLegend[value1]}</Label>
                                                 )
                                             })}
                                         </div>

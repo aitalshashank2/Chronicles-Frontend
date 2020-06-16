@@ -3,6 +3,8 @@ import axios from "axios"
 import {Redirect} from 'react-router-dom'
 
 import Navbar from "./navbar"
+import SingleLogo from "./singleLogo.png"
+
 import {Loader, Container, Header ,List, Image, Checkbox} from "semantic-ui-react";
 
 class AdminView extends React.Component{
@@ -63,7 +65,7 @@ class AdminView extends React.Component{
                                                 <Checkbox style={{marginRight: '3em'}} label={"Admin Status"} slider checked={value['isAdmin']} onChange={(x=index)=>{this.handleAdmin(index)}} />
                                                 |<Checkbox style={{marginLeft: '3em'}} label={"Active Status"} slider checked={value['is_active']} onChange={(x=index)=>{this.handleActive(index)}} />
                                             </List.Content>
-                                            <Image avatar src='https://react.semantic-ui.com/images/avatar/small/lena.png' />
+                                            <Image avatar src={SingleLogo} />
                                             <List.Content>
                                                 <Header as={"h4"} style={{color:value['isAdmin'] ? "#400080" : "#000000"}}>{value['username']}</Header>
                                             </List.Content>
