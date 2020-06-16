@@ -5,15 +5,18 @@ import {Redirect} from 'react-router-dom'
 import Navbar from "./navbar"
 import SingleLogo from "./singleLogo.png"
 
-import {Loader, Container, Header ,List, Image, Checkbox} from "semantic-ui-react";
+import {Loader, Container, Header, List, Image, Checkbox, Card} from "semantic-ui-react"
 
 class AdminView extends React.Component{
     constructor(props) {
         super(props);
-        this.state={loadUsers: false, loadCurrUser: false, isCurrUserAdmin: false, changedUserList: null}
+        this.state={isMobile: false, loadUsers: false, loadCurrUser: false, isCurrUserAdmin: false, changedUserList: null}
     }
 
     componentDidMount() {
+        this.updatePredicate()
+        window.addEventListener("resize", this.updatePredicate)
+
         axios.get('/users/curr/').then(res => {
             if(res.data['isAdmin']){
                 this.setState({loadCurrUser: true, isCurrUserAdmin: true})
@@ -27,6 +30,14 @@ class AdminView extends React.Component{
         }).catch(err => {
             this.setState({loadUsers: false})
         })
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updatePredicate)
+    }
+
+    updatePredicate = () => {
+        this.setState({isMobile: window.innerWidth < 800})
     }
 
     handleAdmin = (x) => {
@@ -52,30 +63,57 @@ class AdminView extends React.Component{
     render(){
         if(this.state.loadCurrUser && this.state.loadUsers){
             if(this.state.isCurrUserAdmin){
-                return (
-                    <div>
-                        <Navbar /><br />
-                        <Container>
-                            <Header textAlign={"center"}>Users</Header><hr />
-                            <List divided verticalAlign={"middle"}>
-                                {this.state.changedUserList.map((value, index) => {
-                                    return (
-                                        <List.Item style={{padding: '1em'}}>
-                                            <List.Content floated='right' >
-                                                <Checkbox style={{marginRight: '3em'}} label={"Admin Status"} slider checked={value['isAdmin']} onChange={(x=index)=>{this.handleAdmin(index)}} />
-                                                |<Checkbox style={{marginLeft: '3em'}} label={"Active Status"} slider checked={value['is_active']} onChange={(x=index)=>{this.handleActive(index)}} />
-                                            </List.Content>
-                                            <Image avatar src={SingleLogo} />
-                                            <List.Content>
-                                                <Header as={"h4"} style={{color:value['isAdmin'] ? "#400080" : "#000000"}}>{value['username']}</Header>
-                                            </List.Content>
-                                        </List.Item>
-                                    )
-                                })}
-                            </List>
-                        </Container>
-                    </div>
-                )
+
+                if(this.state.isMobile){
+                    return (
+                        <div>
+                            <Navbar /><br />
+                            <Container>
+                                <Card.Group centered>
+                                    {this.state.changedUserList.map((value, index) => {
+                                        return (
+                                            <Card>
+                                                <Card.Content>
+                                                    <Image floated={"right"} size={"mini"} src={SingleLogo} />
+                                                    <Card.Header style={{color:value['isAdmin'] ? "#400080" : "#000000"}}>{value['username']}</Card.Header>
+                                                    <Card.Description>
+                                                        <Checkbox label={"Admin Status"} slider checked={value['isAdmin']} onChange={(x=index)=>{this.handleAdmin(index)}} /><br /><br />
+                                                        <Checkbox label={"Active Status"} slider checked={value['is_active']} onChange={(x=index)=>{this.handleActive(index)}} />
+                                                    </Card.Description>
+                                                </Card.Content>
+                                            </Card>
+                                        )
+                                    })}
+                                </Card.Group>
+                            </Container>
+                        </div>
+                    )
+                }else{
+                    return (
+                        <div>
+                            <Navbar /><br />
+                            <Container>
+                                <Header textAlign={"center"}>Users</Header><hr />
+                                <List divided verticalAlign={"middle"}>
+                                    {this.state.changedUserList.map((value, index) => {
+                                        return (
+                                            <List.Item style={{padding: '1em'}}>
+                                                <List.Content floated='right' >
+                                                    <Checkbox style={{marginRight: '3em'}} label={"Admin Status"} slider checked={value['isAdmin']} onChange={(x=index)=>{this.handleAdmin(index)}} />
+                                                    |<Checkbox style={{marginLeft: '3em'}} label={"Active Status"} slider checked={value['is_active']} onChange={(x=index)=>{this.handleActive(index)}} />
+                                                </List.Content>
+                                                <Image avatar src={SingleLogo} />
+                                                <List.Content>
+                                                    <Header as={"h4"} style={{color:value['isAdmin'] ? "#400080" : "#000000"}}>{value['username']}</Header>
+                                                </List.Content>
+                                            </List.Item>
+                                        )
+                                    })}
+                                </List>
+                            </Container>
+                        </div>
+                    )
+                }
             }else{
                 return (
                     <Redirect to={"/"} />

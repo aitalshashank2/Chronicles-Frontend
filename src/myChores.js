@@ -33,7 +33,7 @@ class MyChoresProjectList extends React.Component{
             }
 
             return (
-                <CardGroup itemsPerRow={3}>
+                <CardGroup centered>
                     {this.state.userProjects.map((value, index) => {
                         return (
                             <Card color={"purple"} href={"/projects/"+value['slug']+"/"} key={index}>
@@ -82,7 +82,7 @@ class MyChoresBugList extends React.Component{
             }
 
             return (
-                <Card.Group itemsPerRow={2}>
+                <Card.Group centered>
                     {this.state.bugs.map((value, index) => {
                         return (
                             <Card color={value['status'] ? "green" : "red"} href={"/projects/"+value['project']['slug']+'/'} key={index}>
@@ -110,21 +110,39 @@ class MyChoresBugList extends React.Component{
 }
 
 class MyChores extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {isMobile: false}
+    }
+
+    componentDidMount() {
+        this.updatePredicate()
+        window.addEventListener("resize", this.updatePredicate)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updatePredicate)
+    }
+
+    updatePredicate = () => {
+        this.setState({isMobile: window.innerWidth < 800})
+    }
+
     render(){
         return (
             <div>
                 <Navbar /><br />
-                <Grid style={{width: "100%"}} divided padded>
-                    <Grid.Column width={8}>
-                        <Header textAlign={"center"}>Projects</Header>
-                        <Segment floated style={{height: '83vh', overflowY: "scroll"}} className={"scrollBar"}>
-                            <MyChoresProjectList />
+                <Grid style={{width: "100%"}} divided padded stackable>
+                    <Grid.Column width={7}>
+                        <Header textAlign={"center"}>Bug Reports assigned to me</Header>
+                        <Segment floated style={{height: this.state.isMobile ? "auto" : "83vh", overflowY: "scroll"}} className={"scrollBar"}>
+                            <MyChoresBugList />
                         </Segment>
                     </Grid.Column>
-                    <Grid.Column width={8}>
-                        <Header textAlign={"center"}>Bug Reports assigned to me</Header>
-                        <Segment floated style={{height: '83vh', overflowY: "scroll"}} className={"scrollBar"}>
-                            <MyChoresBugList />
+                    <Grid.Column width={9}>
+                        <Header textAlign={"center"}>Projects</Header>
+                        <Segment floated style={{height: this.state.isMobile ? "auto" : "83vh", overflowY: "scroll"}} className={"scrollBar"}>
+                            <MyChoresProjectList />
                         </Segment>
                     </Grid.Column>
                 </Grid>
