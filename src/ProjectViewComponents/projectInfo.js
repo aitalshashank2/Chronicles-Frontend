@@ -182,10 +182,26 @@ class ProjectInfo extends React.Component{
             canSubmit = (<div />)
         }
 
+        if(this.props.isMobile){
+            return (
+                <div style={{backgroundColor: "#000000"}}>
+                    <Header size={"huge"} textAlign={"center"} inverted>
+                        {this.props.project['name']}
+                    </Header>
+                    <Image wrapped src={this.props.project['image']} bordered /><hr />
+                    {projectLogo}<hr />
+                    {teamInfo}<hr />
+                    {customEditor}<hr />
+                    {deleteOption}
+                    {canSubmit}
+                </div>
+            )
+        }
+
         return (
 
             <div style={{zIndex:10, position:"relative", backgroundColor:"#00000099", display: (this.props.isVisible ? "block" : "none")}}>
-                <Grid divided style={{minHeight: 'calc(100vh - 66px)', maxHeight: 'calc(100vh - 66px)'}} padded>
+                <Grid divided style={{minHeight: 'calc(100vh - 66px)', maxHeight: 'calc(100vh - 66px)'}} padded stackable>
                     <Grid.Column width={4} style={{overflowY: 'scroll', maxHeight: 'inherit', backgroundColor:"#000000"}} className={"scrollBar"}>
                         <div>
                             <Header size={"huge"} textAlign={"center"} inverted>

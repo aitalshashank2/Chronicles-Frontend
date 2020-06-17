@@ -51,7 +51,7 @@ class Login extends React.Component{
                             <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} style={{marginBottom: '0'}}/>
                             <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} style={{marginTop: '0'}}/>
                         </div>
-                    </div>
+                    </div><br /><br />
                 </div>
             )
         }else{

@@ -104,13 +104,13 @@ class BugReportDetail extends React.Component{
                 text: val['username'],
                 value: val['id'],
             }))
-            let PIC, statusDesc, patchButton, deleteButton, errorMessage
+            let PIC = null, statusDesc = null, patchButton = null, deleteButton = null, errorMessage = null
             if(this.props.canEdit){
                 PIC = (
-                    <Dropdown value={this.state.changedPersonInCharge} style={{margin: '0.5em'}} placeholder={"Person in Charge"} search selection options={userOptions} onChange={this.handlePersonInCharge} />
+                    <Dropdown value={this.state.changedPersonInCharge} style={{marginBottom: '0.5em', marginRight: '1em'}} placeholder={"Person in Charge"} search selection options={userOptions} onChange={this.handlePersonInCharge} />
                 )
                 statusDesc = (
-                    <div style={{display: "inline-flex", marginLeft: "5em", marginRight: "5em"}}>
+                    <div style={{display: "inline-flex", marginLeft: this.props.isMobile ? "0" : "5em", marginRight: this.props.isMobile ? "0" : "5em"}}>
                         <Header floated={"left"}>Status: </Header>
                         <Checkbox slider value={this.state.changedStatus} checked={this.state.changedStatus} onChange={this.handleStatus} />
                     </div>
@@ -143,14 +143,34 @@ class BugReportDetail extends React.Component{
                 <p style={{color: "red"}}>{this.state.errorInSub}</p>
             )
 
+            let itemDesc
+            if(this.props.isMobile){
+                itemDesc = (
+                    <Item.Description>
+                        {PIC}
+                        {statusDesc}{this.props.canEdit ? <br/> : null}
+                        {patchButton}
+                        {deleteButton}{this.props.canEdit ? <br/> : null}
+                        {errorMessage}{this.props.canEdit ? <br/> : null}
+                    </Item.Description>
+                )
+            }else{
+                itemDesc = (
+                    <Item.Description>
+                        {PIC}{statusDesc}{patchButton}{deleteButton}{errorMessage}
+                    </Item.Description>
+                )
+            }
+
             return (
                 <div>
-                    <Segment raised style={{backgroundColor: (this.state.bugReportStatus ? '#e6ffe6':'#ffe6e6'), height: '25vh', overflowY: "scroll"}} className={"scrollBar"} >
+                    <Segment raised style={{backgroundColor: (this.state.bugReportStatus ? '#e6ffe6':'#ffe6e6'), height: this.props.isMobile ? "auto" : '25vh', overflowY: "scroll"}} className={"scrollBar"} >
                         <Item.Group>
                             <Item>
                                 <Item.Content verticalAlign={'middle'}>
                                     <Modal trigger={<Item.Header className={"hoverPointer"} style={{fontSize: '2em', lineHeight: '2.2em'}}>{this.state.bugReportHeading}</Item.Header>}>
-                                        <Modal.Content>
+                                        <Modal.Header>{this.state.bugReportHeading}</Modal.Header>
+                                        <Modal.Content scrolling>
                                             <Modal.Description>
                                                 <CKeditor
                                                     editor={ClassicEditor}
@@ -167,9 +187,7 @@ class BugReportDetail extends React.Component{
                                         </Modal.Content>
                                     </Modal>
                                     <Item.Meta>Reporter: {this.state.bugReportReporter['username']}</Item.Meta>
-                                    <Item.Description>
-                                        {PIC}{statusDesc}{patchButton}{deleteButton}{errorMessage}
-                                    </Item.Description><br />
+                                    {itemDesc}<br />
                                     <Item.Extra>
                                         <div>
                                             {this.tagDeHash(this.state.bugReportTagHash).map((value1, index1) => {
@@ -183,7 +201,14 @@ class BugReportDetail extends React.Component{
                             </Item>
                         </Item.Group>
                     </Segment>
-                    <CommentHandler report={this.state.bugReportID} />
+                    {this.props.isMobile ? (
+                        <div>
+                            <br />
+                            <Modal trigger={<Button fluid color={"violet"}>Comments</Button>}>
+                                <CommentHandler report={this.state.bugReportID} isMobile={this.props.isMobile} />
+                            </Modal>
+                        </div>
+                    ) : <CommentHandler report={this.state.bugReportID} isMobile={this.props.isMobile} />}
                 </div>
             )
         }else{

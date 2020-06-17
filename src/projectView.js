@@ -6,7 +6,9 @@ import {
     Header,
     Segment,
     Card,
-    Icon
+    Icon,
+    Container,
+    Modal
 } from "semantic-ui-react"
 
 import Navbar from "./navbar"
@@ -14,6 +16,8 @@ import Navbar from "./navbar"
 import ProjectInfo from "./ProjectViewComponents/projectInfo"
 import BugList from "./ProjectViewComponents/bugList"
 import TheThirdPart from "./ProjectViewComponents/theThirdPart"
+
+import NewBugReportForm from "./ProjectViewComponents/newBugReportForm"
 
 export const tagLegend = [
     "Functionality",
@@ -41,14 +45,75 @@ export const tagLegend = [
     "Typo"
 ]
 
+class MobileProjectView extends React.Component{
+    constructor(props) {
+        super(props)
+        this.state = this.props.parentState
+    }
+
+    handleChange = (childState) => {
+        this.setState(childState)
+    }
+
+    isAdminOrTeamMember = () => {
+        if(this.state.user['isAdmin'] || this.state.project['team'].includes(this.state.user['id'])){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    render(){
+
+        if(this.state.bugReport === 0){
+            return (
+                <div>
+                    <Navbar />
+                    <Container>
+                        <Modal trigger={<Header style={{color: "#290066", marginTop: '5px'}} className={"hoverPointer"} size={"huge"} textAlign={"center"} onClick={() => {this.setState({projectDetailsVisible: true})}}>{this.state.project['name']}</Header>}>
+                            <Modal.Content style={{backgroundColor: "#000000"}} scrolling>
+                                <Modal.Description>
+                                    <ProjectInfo isMobile={this.state.isMobile} project={this.state.project} onChange={this.handleChange} isVisible={this.state.projectDetailsVisible} canEdit={this.isAdminOrTeamMember()} />
+                                </Modal.Description>
+                            </Modal.Content>
+                        </Modal>
+                        <Card color={"purple"} fluid onClick={() => {this.setState({bugReport: -1})}} style={{padding: '1em', alignItems:'center'}}>
+                            <Header as='h4' style={{display: 'flex', alignItems: 'center'}}>
+                                <Icon name='add' />
+                                <Header.Content>New Report</Header.Content>
+                            </Header>
+                        </Card>
+                        <Segment style={{backgroundColor: "#6600ff0f"}}>
+                            <Header as={"h3"} textAlign={"center"}>Bugs<hr /></Header>
+                            <BugList project={this.state.project} onChange={this.handleChange} />
+                        </Segment>
+                    </Container>
+
+                </div>
+            )
+        }else{
+            return (
+                <div>
+                    <Navbar />
+                    <Header style={{color: "#290066", marginTop: '5px'}} className={"hoverPointer"} size={"huge"} textAlign={"center"} onClick={()=>{this.setState({bugReport: 0})}}>{this.state.project['name']}</Header>
+                    <TheThirdPart isMobile={this.state.isMobile} stateIndex={this.state.bugReport} project={this.state.project['id']} onChange={this.handleChange} canEdit={this.isAdminOrTeamMember()} />
+                </div>
+            )
+        }
+    }
+}
+
 class ProjectView extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = {bugReport: 0, projectLoaded: false, user:null, getUser:false}
+        this.state = {bugReport: 0, projectLoaded: false, user:null, getUser:false, isMobile: false}
     }
 
     componentDidMount() {
+        this.updatePredicate()
+        window.addEventListener("resize", this.updatePredicate)
+
         axios.get('/projects/'+this.props.match.params.slug+'/').then((response) => {
             this.setState({projectLoaded: true, project: response.data, projectDetailsVisible:false})
         }).catch((error) => {
@@ -60,6 +125,14 @@ class ProjectView extends React.Component{
         }).catch(err => {
             this.setState({user: "Anon"})
         })
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updatePredicate)
+    }
+
+    updatePredicate = () => {
+        this.setState({isMobile: window.innerWidth < 800})
     }
 
     isAdminOrTeamMember = () => {
@@ -77,6 +150,13 @@ class ProjectView extends React.Component{
     render(){
 
         if(this.state.projectLoaded && this.state.getUser){
+
+            if(this.state.isMobile){
+                return (
+                    <MobileProjectView parentState={this.state} />
+                )
+            }
+
             return (
                 <div>
                     <Navbar />

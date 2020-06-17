@@ -85,14 +85,14 @@ class CommentHandler extends React.Component{
 
             if(this.state.comments.length === 0 && this.state.newCommentList.length === 0){
                 commentList = (
-                    <div style={{height: "55vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <div style={{height: this.props.isMobile ? '70vh' : '55vh', display: "flex", alignItems: "center", justifyContent: "center"}}>
                         <p style={{color: "grey"}}>Be the first one to comment</p>
                         <div style={{float:"left", clear: "both"}} ref={(el) => this.commentsEnd = el} />
                     </div>
                 )
             }else{
                 commentList = (
-                    <div style={{height: '55vh', overflowY: "scroll"}} className={"scrollBar"}>
+                    <div style={{height: this.props.isMobile ? '70vh' : '55vh', overflowY: "scroll"}} className={"scrollBar"}>
                         {this.state.comments.map((value, index) => {
                             return (
                                 <Segment vertical>
@@ -113,6 +113,19 @@ class CommentHandler extends React.Component{
                     </div>
                 )
             }
+        }
+
+        if(this.props.isMobile){
+            return (
+                <Segment style={{height: "81vh"}}>
+                    {commentList}<hr />
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Group>
+                            <Form.Input width={16} value={this.state.commentData} onChange={this.handleChange} />
+                        </Form.Group>
+                    </Form>
+                </Segment>
+            )
         }
 
         return (
