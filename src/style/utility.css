@@ -1,0 +1,18 @@
+.flex_centered{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.none{
+    display: none !important;
+}
+
+.height_full_percent{
+    height: 100% !important;
+}
+.height_full{
+    height: 100vh !important;
+}
+.width_full_percent{
+    width: 100% !important;
+}

@@ -1,0 +1,42 @@
+.team_item{
+    text-align: center;
+}
+
+.project_logo{
+    text-align: center !important;
+}
+.project_logo_header{
+    margin: 0 !important;
+}
+.project_logo_input{
+    width: 210px;
+}
+
+.delete_option{
+    text-align: center;
+}
+
+.dark_bg{
+    background-color: #000000;
+}
+
+.main_crux{
+    min-height: calc(100vh - 66px);
+    max-height: calc(100vh - 66px);
+}
+.col1{
+    overflow-y: scroll !important;
+    max-height: inherit !important;
+    background-color: #000000 !important;
+}
+.col2{
+    height: inherit;
+}
+.col2_inner{
+    overflow-y: scroll;
+    max-height: 90vh;
+    overflow-x: hidden;
+}
+.close_icon{
+    float:right;
+}

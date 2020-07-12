@@ -5,6 +5,8 @@ import axios from "axios"
 import cookie from "react-cookies"
 import {Loader} from "semantic-ui-react"
 
+import "../../style/utility.css"
+
 class Logger extends React.Component{
     constructor(props) {
         super(props)
@@ -43,7 +45,7 @@ class Logger extends React.Component{
             return <Redirect to="/login/" />
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size="massive" />
                 </div>
             )

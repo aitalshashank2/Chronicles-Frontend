@@ -3,7 +3,10 @@ import axios from "axios";
 import {Grid, Header, Icon, Image, List, Loader, Segment, Input, Dropdown, Button} from "semantic-ui-react";
 import CKeditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import UploadAdapter from "../uploadAdapter";
+import UploadAdapter from "../miscellaneous/uploadAdapter";
+
+import "../../style/utility.css"
+import "../../style/ProjectViewComponents/projectInfo.css"
 
 class ProjectInfo extends React.Component{
     constructor(props) {
@@ -98,13 +101,13 @@ class ProjectInfo extends React.Component{
             }else{
                 teamInfo = (
                     <Segment>
-                        <Header size={"medium"} textAlign={"center"}>Team</Header><hr color={'#111111'}/>
+                        <Header size={"medium"} className={"team_item"}>Team</Header><hr color={'#111111'}/>
                         <List divided relaxed>
                             {this.state.projectTeam.map((value, index) => {
                                 return (
                                     <List.Item key={index}>
                                         <List.Content>
-                                            <List.Header style={{textAlign: 'center'}}>{value['username']}</List.Header>
+                                            <List.Header className={"team_item"}>{value['username']}</List.Header>
                                         </List.Content>
                                     </List.Item>
                                 )
@@ -115,7 +118,7 @@ class ProjectInfo extends React.Component{
             }
         }else{
             teamInfo = (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size="medium" />
                 </div>
             )
@@ -123,9 +126,9 @@ class ProjectInfo extends React.Component{
 
         if(this.props.canEdit){
             projectLogo = (
-                <Segment style={{textAlign:"center"}}>
-                    <Header style={{margin:0}}>Update Project Logo</Header><hr />
-                    <Input style={{width: '210px'}} inverted type={"file"} name={"image"} onChange={this.handleImage} accept={"image/png, image/jpeg, image/jpg"}/>
+                <Segment className={"project_logo"}>
+                    <Header className={"project_logo_header"}>Update Project Logo</Header><hr />
+                    <Input className={"project_logo_input"} inverted type={"file"} name={"image"} onChange={this.handleImage} accept={"image/png, image/jpeg, image/jpg"}/>
                 </Segment>
             )
             customEditor = (
@@ -151,7 +154,7 @@ class ProjectInfo extends React.Component{
                 />
             )
             deleteOption = (
-                <div style={{textAlign: "center", width: "100%"}}>
+                <div className={"delete_option width_full_percent"}>
                     <Button inverted color={"red"} onClick={this.handleDelete}>Delete</Button><hr />
                 </div>
             )
@@ -184,7 +187,7 @@ class ProjectInfo extends React.Component{
 
         if(this.props.isMobile){
             return (
-                <div style={{backgroundColor: "#000000"}}>
+                <div className={"dark_bg"}>
                     <Header size={"huge"} textAlign={"center"} inverted>
                         {this.props.project['name']}
                     </Header>
@@ -201,12 +204,12 @@ class ProjectInfo extends React.Component{
         return (
 
             <div style={{zIndex:10, position:"relative", backgroundColor:"#00000099", display: (this.props.isVisible ? "block" : "none")}}>
-                <Grid divided style={{minHeight: 'calc(100vh - 66px)', maxHeight: 'calc(100vh - 66px)'}} padded stackable>
-                    <Grid.Column width={4} style={{overflowY: 'scroll', maxHeight: 'inherit', backgroundColor:"#000000"}} className={"scrollBar"}>
+                <Grid divided className={"main_crux"} padded stackable>
+                    <Grid.Column width={4} className={"scrollBar col1"}>
                         <div>
                             <Header size={"huge"} textAlign={"center"} inverted>
                                 {this.props.project['name']}
-                                <Icon name={"close"} inverted style={{float: "right"}} link onClick={() => {this.props.onChange({projectDetailsVisible: false})}}/>
+                                <Icon name={"close"} inverted className={"close_icon"} link onClick={() => {this.props.onChange({projectDetailsVisible: false})}}/>
                             </Header>
                             <Image wrapped src={this.props.project['image']} bordered /><hr />
                             {projectLogo}<hr />
@@ -215,8 +218,8 @@ class ProjectInfo extends React.Component{
                             {canSubmit}
                         </div>
                     </Grid.Column>
-                    <Grid.Column width={12} style={{height: "inherit", display:"flex", alignItems: "center", justifyContent: "center"}}>
-                        <div style={{overflowY: 'scroll', maxHeight: "90vh", overflowX: 'hidden'}}>
+                    <Grid.Column width={12} className={"flex_centered col2"}>
+                        <div className={"col2_inner"}>
                             {customEditor}
                         </div>
                     </Grid.Column>

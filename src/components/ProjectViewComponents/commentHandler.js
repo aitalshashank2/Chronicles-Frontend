@@ -3,6 +3,9 @@ import axios from "axios"
 
 import {Segment, Form, Header, Loader} from "semantic-ui-react";
 
+import "../../style/utility.css"
+import "../../style/ProjectViewComponents/commentHandler.css"
+
 class CommentHandler extends React.Component{
     constructor(props) {
         super(props)
@@ -77,7 +80,7 @@ class CommentHandler extends React.Component{
 
         if(this.state.comments === null){
             commentList = (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size={"medium"} />
                 </div>
             )
@@ -85,8 +88,8 @@ class CommentHandler extends React.Component{
 
             if(this.state.comments.length === 0 && this.state.newCommentList.length === 0){
                 commentList = (
-                    <div style={{height: this.props.isMobile ? '70vh' : '55vh', display: "flex", alignItems: "center", justifyContent: "center"}}>
-                        <p style={{color: "grey"}}>Be the first one to comment</p>
+                    <div className={"flex_centered"} style={{height: this.props.isMobile ? '70vh' : '55vh'}}>
+                        <p className={"no_comment_placeholder"}>Be the first one to comment</p>
                         <div style={{float:"left", clear: "both"}} ref={(el) => this.commentsEnd = el} />
                     </div>
                 )
@@ -96,7 +99,7 @@ class CommentHandler extends React.Component{
                         {this.state.comments.map((value, index) => {
                             return (
                                 <Segment vertical>
-                                    <Header size={"small"} style={{margin: 0, color:"#400080"}}>{value['commenter']['username']}</Header>
+                                    <Header size={"small"} className={"comment_header"}>{value['commenter']['username']}</Header>
                                     <p>{value['body']}</p>
                                 </Segment>
                             )
@@ -104,7 +107,7 @@ class CommentHandler extends React.Component{
                         {this.state.newCommentList.map((value, index) => {
                             return (
                                 <Segment vertical>
-                                    <Header size={"small"} style={{margin: 0, color:"#400080"}}>{value['commenter']['username']}</Header>
+                                    <Header size={"small"} className={"comment_header"}>{value['commenter']['username']}</Header>
                                     <p>{value['body']}</p>
                                 </Segment>
                             )
@@ -117,7 +120,7 @@ class CommentHandler extends React.Component{
 
         if(this.props.isMobile){
             return (
-                <Segment style={{height: "81vh"}}>
+                <Segment className={"crux_mobile"}>
                     {commentList}<hr />
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Group>
@@ -129,7 +132,7 @@ class CommentHandler extends React.Component{
         }
 
         return (
-            <Segment style={{height: '64vh'}}>
+            <Segment className={"crux_desktop"}>
                 {commentList}<hr />
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Group>

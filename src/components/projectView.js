@@ -11,13 +11,14 @@ import {
     Modal
 } from "semantic-ui-react"
 
-import Navbar from "./navbar"
+import Navbar from "./miscellaneous/navbar"
 
 import ProjectInfo from "./ProjectViewComponents/projectInfo"
 import BugList from "./ProjectViewComponents/bugList"
 import TheThirdPart from "./ProjectViewComponents/theThirdPart"
 
-import NewBugReportForm from "./ProjectViewComponents/newBugReportForm"
+import "../style/utility.css"
+import "../style/projectView.css"
 
 export const tagLegend = [
     "Functionality",
@@ -70,20 +71,20 @@ class MobileProjectView extends React.Component{
                 <div>
                     <Navbar />
                     <Container>
-                        <Modal trigger={<Header style={{color: "#290066", marginTop: '5px'}} className={"hoverPointer"} size={"huge"} textAlign={"center"} onClick={() => {this.setState({projectDetailsVisible: true})}}>{this.state.project['name']}</Header>}>
-                            <Modal.Content style={{backgroundColor: "#000000"}} scrolling>
+                        <Modal trigger={<Header className={"hoverPointer main_header"} size={"huge"} textAlign={"center"} onClick={() => {this.setState({projectDetailsVisible: true})}}>{this.state.project['name']}</Header>}>
+                            <Modal.Content className={"dark_bg"} scrolling>
                                 <Modal.Description>
                                     <ProjectInfo isMobile={this.state.isMobile} project={this.state.project} onChange={this.handleChange} isVisible={this.state.projectDetailsVisible} canEdit={this.isAdminOrTeamMember()} />
                                 </Modal.Description>
                             </Modal.Content>
                         </Modal>
-                        <Card color={"purple"} fluid onClick={() => {this.setState({bugReport: -1})}} style={{padding: '1em', alignItems:'center'}}>
-                            <Header as='h4' style={{display: 'flex', alignItems: 'center'}}>
+                        <Card color={"purple"} fluid onClick={() => {this.setState({bugReport: -1})}} className={"new_report_card"}>
+                            <Header as='h4' className={"flex_centered_partial"}>
                                 <Icon name='add' />
                                 <Header.Content>New Report</Header.Content>
                             </Header>
                         </Card>
-                        <Segment style={{backgroundColor: "#6600ff0f"}}>
+                        <Segment className={"bug_list_bg"}>
                             <Header as={"h3"} textAlign={"center"}>Bugs<hr /></Header>
                             <BugList project={this.state.project} onChange={this.handleChange} />
                         </Segment>
@@ -95,7 +96,7 @@ class MobileProjectView extends React.Component{
             return (
                 <div>
                     <Navbar />
-                    <Header style={{color: "#290066", marginTop: '5px'}} className={"hoverPointer"} size={"huge"} textAlign={"center"} onClick={()=>{this.setState({bugReport: 0})}}>{this.state.project['name']}</Header>
+                    <Header className={"hoverPointer main_header"} size={"huge"} textAlign={"center"} onClick={()=>{this.setState({bugReport: 0})}}>{this.state.project['name']}</Header>
                     <TheThirdPart isMobile={this.state.isMobile} stateIndex={this.state.bugReport} project={this.state.project['id']} onChange={this.handleChange} canEdit={this.isAdminOrTeamMember()} />
                 </div>
             )
@@ -160,21 +161,21 @@ class ProjectView extends React.Component{
             return (
                 <div>
                     <Navbar />
-                    <Grid divided style={{minHeight: 'calc(100vh - 66px)', maxHeight: 'calc(100vh - 66px)', position:"absolute"}} padded>
-                        <Grid.Column width={4} style={{maxHeight: 'inherit'}}>
-                            <Header style={{color: "#290066"}} className={"hoverPointer"} size={"huge"} textAlign={"center"} onClick={() => {this.setState({projectDetailsVisible: true})}}>{this.state.project['name']}</Header>
-                            <Card color={"purple"} fluid onClick={() => {this.setState({bugReport: -1})}} style={{padding: '1em', alignItems:'center'}}>
-                                <Header as='h4' style={{display: 'flex', alignItems: 'center'}}>
+                    <Grid divided className={"crux"} padded>
+                        <Grid.Column width={4} className={"crux_grid_column"}>
+                            <Header className={"hoverPointer main_color"} size={"huge"} textAlign={"center"} onClick={() => {this.setState({projectDetailsVisible: true})}}>{this.state.project['name']}</Header>
+                            <Card color={"purple"} fluid onClick={() => {this.setState({bugReport: -1})}} className={"new_report_card"}>
+                                <Header as='h4' className={"flex_centered_partial"}>
                                     <Icon name='add' />
                                     <Header.Content>New Report</Header.Content>
                                 </Header>
                             </Card>
-                            <Segment style={{maxHeight: '87%' ,overflowY: 'scroll', backgroundColor: "#6600ff0f"}} className={"scrollBar"}>
+                            <Segment className={"scrollBar bug_list bug_list_bg"}>
                                 <Header as={"h3"} textAlign={"center"}>Bugs<hr /></Header>
                                 <BugList project={this.state.project} onChange={this.handleChange} />
                             </Segment>
                         </Grid.Column>
-                        <Grid.Column width={12} style={{overflowY: 'scroll', maxHeight: 'inherit'}} className={"scrollBar"}>
+                        <Grid.Column width={12} className={"scrollBar third_part"}>
                             <TheThirdPart stateIndex={this.state.bugReport} project={this.state.project['id']} onChange={this.handleChange} canEdit={this.isAdminOrTeamMember()} />
                         </Grid.Column>
                     </Grid>
@@ -183,7 +184,7 @@ class ProjectView extends React.Component{
             )
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size="medium" />
                 </div>
             )

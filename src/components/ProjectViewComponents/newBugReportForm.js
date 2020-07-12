@@ -6,8 +6,11 @@ import randomstring from 'randomstring'
 
 import {Button, Dropdown, Form, Header, Segment, Message} from "semantic-ui-react";
 
+import "../../style/utility.css"
+import "../../style/ProjectViewComponents/newBugReportForm.css"
+
 import {tagLegend} from "../projectView";
-import UploadAdapter from "../uploadAdapter";
+import UploadAdapter from "../miscellaneous/uploadAdapter";
 
 class NewBugReportForm extends React.Component{
 
@@ -100,7 +103,7 @@ class NewBugReportForm extends React.Component{
         return (
             <Segment color={"purple"}>
                 <Form onSubmit={this.handleSubmit}>
-                    <Header size={"huge"} style={{color: '#800080'}}>New Bug Report</Header>
+                    <Header size={"huge"} className={"form_header"}>New Bug Report</Header>
                     {errorHandler}
                     <Form.Field required>
                         <label>Title</label>

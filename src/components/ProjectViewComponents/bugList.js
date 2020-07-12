@@ -2,6 +2,9 @@ import React from "react";
 import axios from "axios";
 import {Card, CardGroup, Header, Label, Loader} from "semantic-ui-react";
 
+import "../../style/utility.css"
+import "../../style/ProjectViewComponents/bugList.css"
+
 import {tagLegend} from "../projectView"
 
 class BugList extends React.Component{
@@ -35,8 +38,8 @@ class BugList extends React.Component{
 
             if(this.state.bugReports.length === 0){
                 return (
-                    <div style={{textAlign: "center"}}>
-                        <p style={{color: "grey"}}>No Reports as of now!</p>
+                    <div className={"no_bugs_container"}>
+                        <p className={"no_bugs_description"}>No Reports as of now!</p>
                     </div>
                 )
             }
@@ -45,12 +48,12 @@ class BugList extends React.Component{
                 <CardGroup>
                     {this.state.bugReports.map((value, index) => {
                         return (
-                            <Card color={value['status'] ? 'green' : 'red'} fluid style={{padding: '0.5em', marginBottom: '0.25em', backgroundColor: "inherit"}} onClick={() => {this.props.onChange({bugReport: value['id']})}} key={index}>
+                            <Card color={value['status'] ? 'green' : 'red'} fluid className={"bug_list_card"} onClick={() => {this.props.onChange({bugReport: value['id']})}} key={index}>
                                 <Header size={"small"}>{value['heading']}</Header>
                                 <div>
                                     {this.tagDeHash(value['tagsHash']).map((value1, index1) => {
                                         return (
-                                            <Label tag style={{backgroundColor: '#3d0099', marginBottom: '5px', color: "white"}} key={index1}>{tagLegend[value1]}</Label>
+                                            <Label tag className={"bug_list_card_label"} key={index1}>{tagLegend[value1]}</Label>
                                         )
                                     })}
                                 </div>
@@ -61,7 +64,7 @@ class BugList extends React.Component{
             )
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size={"medium"} />
                 </div>
             )

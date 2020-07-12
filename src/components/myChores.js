@@ -1,9 +1,12 @@
 import React from "react"
 import axios from "axios"
 
-import Navbar from "./navbar"
+import Navbar from "./miscellaneous/navbar"
 
 import {CardGroup, Grid, Header, Loader, Segment, Card, Image} from "semantic-ui-react"
+
+import "../style/utility.css"
+import "../style/myChores.css"
 
 const backend = "http://localhost:8000"
 
@@ -26,8 +29,8 @@ class MyChoresProjectList extends React.Component{
 
             if(this.state.userProjects.length === 0){
                 return (
-                    <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
-                        <p style={{color: "grey"}}>You are not a member of any projects 😥</p>
+                    <div className={"flex_centered height_full_percent"}>
+                        <p className={"description_grey"}>You are not a member of any projects <span role={"img"} aria-label={"sad_emoji"}>😥</span></p>
                     </div>
                 )
             }
@@ -48,7 +51,7 @@ class MyChoresProjectList extends React.Component{
             )
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size={"medium"} />
                 </div>
             )
@@ -75,8 +78,8 @@ class MyChoresBugList extends React.Component{
 
             if(this.state.bugs.length === 0){
                 return (
-                    <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
-                        <p style={{color: "grey"}}>No bug reports to fix! 🖖</p>
+                    <div className={"flex_centered height_full_percent"}>
+                        <p className={"description_grey"}>No bug reports to fix!<span role={"img"} aria-label={"spoc_hand"}> </span>🖖</p>
                     </div>
                 )
             }
@@ -101,7 +104,7 @@ class MyChoresBugList extends React.Component{
             )
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size={"medium"} />
                 </div>
             )
@@ -132,16 +135,16 @@ class MyChores extends React.Component{
         return (
             <div>
                 <Navbar /><br />
-                <Grid style={{width: "100%"}} divided padded stackable>
+                <Grid className={"width_full_percent"} divided padded stackable>
                     <Grid.Column width={7}>
                         <Header textAlign={"center"}>Bug Reports assigned to me</Header>
-                        <Segment floated style={{height: this.state.isMobile ? "auto" : "83vh", overflowY: "scroll"}} className={"scrollBar"}>
+                        <Segment floated style={{height: this.state.isMobile ? "auto" : "83vh"}} className={"scroll scrollBar"}>
                             <MyChoresBugList />
                         </Segment>
                     </Grid.Column>
                     <Grid.Column width={9}>
                         <Header textAlign={"center"}>Projects</Header>
-                        <Segment floated style={{height: this.state.isMobile ? "auto" : "83vh", overflowY: "scroll"}} className={"scrollBar"}>
+                        <Segment floated style={{height: this.state.isMobile ? "auto" : "83vh"}} className={"scroll scrollBar"}>
                             <MyChoresProjectList />
                         </Segment>
                     </Grid.Column>

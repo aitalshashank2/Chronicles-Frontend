@@ -1,15 +1,17 @@
 import React from "react"
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
 import CKeditor from "@ckeditor/ckeditor5-react"
-import UploadAdapter from "./uploadAdapter"
+import UploadAdapter from "./miscellaneous/uploadAdapter"
 import randomstring from 'randomstring'
 
 import {Container, Form, Loader, Header, Dropdown, Button, Message} from 'semantic-ui-react'
 
-import Navbar from "./navbar"
+import Navbar from "./miscellaneous/navbar"
 import axios from "axios"
 import {Redirect} from "react-router-dom"
 import slug from 'slug'
+
+import "../style/utility.css"
 
 class ProjectForm extends React.Component{
     constructor(props) {
@@ -106,7 +108,7 @@ class ProjectForm extends React.Component{
                     <Message negative>{innerErrorMessage}</Message>
                 )
             }else{
-                errorMessage = (<div style={{display: 'none'}} />)
+                errorMessage = (<div className={"none"} />)
             }
 
             return (
@@ -124,7 +126,6 @@ class ProjectForm extends React.Component{
                     </Form.Field>
                     <Form.Field required>
                         <label>Description</label>
-                        {/*<TextArea placeholder={"Description of the project"} type={"text"} name={"description"} onChange={this.handleChange}/>*/}
                         <CKeditor
                             editor={ClassicEditor}
                             onInit={editor=>{
@@ -158,7 +159,7 @@ class ProjectForm extends React.Component{
             )
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size="massive" />
                 </div>
             )
@@ -198,7 +199,7 @@ class ProjectHandler extends React.Component{
             }
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size="massive" />
                 </div>
             )

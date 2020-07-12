@@ -1,0 +1,9 @@
+.list_item{
+    padding: 1em !important;
+}
+.checkbox_left{
+    margin-left: 3em;
+}
+.checkbox_right{
+    margin-right: 3em;
+}

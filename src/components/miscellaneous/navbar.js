@@ -1,7 +1,9 @@
 import React from 'react'
 import axios from 'axios'
-import {Redirect} from 'react-router-dom'
 import {Dropdown, Header, Loader, Menu, Sticky} from "semantic-ui-react"
+
+import "../../style/utility.css"
+import "../../style/miscellaneous/navbar.css"
 
 class Navbar extends React.Component{
     constructor(props) {
@@ -40,18 +42,18 @@ class Navbar extends React.Component{
     render(){
         if(this.state.responseRec){
             if(!this.state.loggedin){
-                return <Redirect to="/login/" />
+                window.location = "/login/"
             }else{
                 if(this.state.my_chores){
-                    return <Redirect to={"/my_chores/"} />
+                    window.location="/my_chores/"
                 }
 
                 if(this.state.add){
-                    return <Redirect to={"/projects/"} />
+                    window.location="/projects/"
                 }
 
                 if(this.state.admin){
-                    return <Redirect to={"/admin/"} />
+                    window.location="/admin/"
                 }
 
                 let adminButton
@@ -64,12 +66,12 @@ class Navbar extends React.Component{
 
                 return (
                     <Sticky>
-                        <Menu borderless inverted style={{borderRadius: '0'}}>
+                        <Menu borderless inverted className={"_menu"}>
                             <Menu.Item>
                                 <a href={"/"}><Header size={"medium"} inverted>Chronicles</Header></a>
                             </Menu.Item>
                             <Menu.Item position={"right"}>
-                                <Dropdown text={this.state.user['username']} direction={"right"} floating item simple style={{minWidth: '9.2em'}}>
+                                <Dropdown text={this.state.user['username']} direction={"right"} floating item simple className={"_dropdown"}>
                                     <Dropdown.Menu>
                                         {adminButton}
                                         <Dropdown.Item icon={"user"} text={"My Chores"} value={"my_chores"} onClick={this.handleDropDown}/>
@@ -85,7 +87,7 @@ class Navbar extends React.Component{
             }
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size="massive" />
                 </div>
             )

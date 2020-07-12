@@ -3,9 +3,12 @@ import cookie from 'react-cookies'
 import randomstring from 'randomstring'
 import {Redirect} from 'react-router-dom'
 import axios from "axios"
-import projectLogo from "./projectLogo.gif"
+import projectLogo from "../static/projectLogo.gif"
 
 import {Button, Menu, Header} from "semantic-ui-react"
+
+import "../../style/utility.css"
+import "../../style/miscellaneous/login.css"
 
 class Login extends React.Component{
 
@@ -45,17 +48,17 @@ class Login extends React.Component{
                             </a>
                         </Menu.Item>
                     </Menu>
-                    <div style={{display:"flex", alignItems: "center", justifyContent: "center", height: '90vh', width: '100%'}}>
+                    <div className={"flex_centered crux_inner"}>
                         <div>
                             <img src={projectLogo} type={"image/gif"} alt={"Chronicles"} />
-                            <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} style={{marginBottom: '0'}}/>
-                            <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} style={{marginTop: '0'}}/>
+                            <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} className={"header_top"}/>
+                            <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} className={"header_bottom"}/>
                         </div>
                     </div><br /><br />
                 </div>
             )
         }else{
-            return <Redirect to={"/"}></Redirect>
+            return <Redirect to={"/"} />
         }
     }
 }

@@ -7,6 +7,9 @@ import {Dropdown, Modal} from "semantic-ui-react"
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
 import CKeditor from "@ckeditor/ckeditor5-react"
 
+import "../../style/utility.css"
+import "../../style/ProjectViewComponents/bugReportDetail.css"
+
 class BugReportDetail extends React.Component{
     constructor(props) {
         super(props);
@@ -107,10 +110,10 @@ class BugReportDetail extends React.Component{
             let PIC = null, statusDesc = null, patchButton = null, deleteButton = null, errorMessage = null
             if(this.props.canEdit){
                 PIC = (
-                    <Dropdown value={this.state.changedPersonInCharge} style={{marginBottom: '0.5em', marginRight: '1em'}} placeholder={"Person in Charge"} search selection options={userOptions} onChange={this.handlePersonInCharge} />
+                    <Dropdown value={this.state.changedPersonInCharge} className={"PIC"} placeholder={"Person in Charge"} search selection options={userOptions} onChange={this.handlePersonInCharge} />
                 )
                 statusDesc = (
-                    <div style={{display: "inline-flex", marginLeft: this.props.isMobile ? "0" : "5em", marginRight: this.props.isMobile ? "0" : "5em"}}>
+                    <div style={{marginLeft: this.props.isMobile ? "0" : "5em", marginRight: this.props.isMobile ? "0" : "5em"}} className={"statusDesc"}>
                         <Header floated={"left"}>Status: </Header>
                         <Checkbox slider value={this.state.changedStatus} checked={this.state.changedStatus} onChange={this.handleStatus} />
                     </div>
@@ -140,7 +143,7 @@ class BugReportDetail extends React.Component{
             }
 
             errorMessage = (
-                <p style={{color: "red"}}>{this.state.errorInSub}</p>
+                <p className={"error_red"}>{this.state.errorInSub}</p>
             )
 
             let itemDesc
@@ -168,7 +171,7 @@ class BugReportDetail extends React.Component{
                         <Item.Group>
                             <Item>
                                 <Item.Content verticalAlign={'middle'}>
-                                    <Modal trigger={<Item.Header className={"hoverPointer"} style={{fontSize: '2em', lineHeight: '2.2em'}}>{this.state.bugReportHeading}</Item.Header>}>
+                                    <Modal trigger={<Item.Header className={"hoverPointer bug_description"}>{this.state.bugReportHeading}</Item.Header>}>
                                         <Modal.Header>{this.state.bugReportHeading}</Modal.Header>
                                         <Modal.Content scrolling>
                                             <Modal.Description>
@@ -192,7 +195,7 @@ class BugReportDetail extends React.Component{
                                         <div>
                                             {this.tagDeHash(this.state.bugReportTagHash).map((value1, index1) => {
                                                 return (
-                                                    <Label tag style={{backgroundColor: '#3d0099', marginBottom:'1em', color: "white"}} key={index1}>{tagLegend[value1]}</Label>
+                                                    <Label tag className={"tag"} key={index1}>{tagLegend[value1]}</Label>
                                                 )
                                             })}
                                         </div>
@@ -213,7 +216,7 @@ class BugReportDetail extends React.Component{
             )
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size={"medium"} />
                 </div>
             )

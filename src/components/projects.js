@@ -1,7 +1,10 @@
 import React from "react"
 import axios from 'axios'
 import {CardGroup, Loader, Card, Image, Header} from "semantic-ui-react";
-import projectLogo from "./projectLogo.gif"
+import projectLogo from "./static/projectLogo.gif"
+
+import "../style/utility.css"
+import "../style/projects.css"
 
 class Projects extends React.Component{
     constructor(props) {
@@ -23,11 +26,11 @@ class Projects extends React.Component{
             if(this.state.proj.length === 0){
                 return (
                     <div>
-                        <div style={{display:"flex", alignItems: "center", justifyContent: "center", height: '90vh', width: '100%'}}>
+                        <div className={"flex_centered width_full_percent crux"}>
                             <div>
                                 <img src={projectLogo} type={"image/gif"} alt={"Chronicles"} />
-                                <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} style={{marginBottom: '0'}}/>
-                                <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} style={{marginTop: '0'}}/>
+                                <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} className={"class_margin_bottom"}/>
+                                <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} className={"class_margin_top"}/>
                             </div>
                         </div>
                     </div>
@@ -51,7 +54,7 @@ class Projects extends React.Component{
 
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size={"huge"} />
                 </div>
             )

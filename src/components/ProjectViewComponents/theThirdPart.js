@@ -2,7 +2,10 @@ import React from "react";
 import {Header, Loader} from "semantic-ui-react"
 import NewBugReportForm from "./newBugReportForm"
 import BugReportDetail from "./bugReportDetail"
-import logo from "../projectLogo.gif"
+import logo from "../static/projectLogo.gif"
+
+import "../../style/utility.css"
+import "../../style/ProjectViewComponents/theThirdPart.css"
 
 class TheThirdPart extends React.Component{
     handleRedirect = (childState) => {
@@ -12,11 +15,11 @@ class TheThirdPart extends React.Component{
     render() {
         if(this.props.stateIndex === 0){
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center", height: '100%', width: '100%'}}>
+                <div className={"flex_centered height_full_percent width_full_percent"}>
                     <div>
-                        <img src={logo} type={"image/gif"} style={{width: '15em'}} alt={"Chronicles"} />
-                        <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} style={{marginBottom: '0'}}/>
-                        <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} style={{marginTop: '0'}}/>
+                        <img src={logo} type={"image/gif"} className={"logo_3"} alt={"Chronicles"} />
+                        <Header size={"huge"} content={"Chronicles"} color={"purple"} textAlign={'center'} className={"header_3_top"}/>
+                        <Header size={"tiny"} content={"A place where Bugs perish"} textAlign={'center'} className={"header_3_bottom"}/>
                     </div>
                 </div>
             )
@@ -30,7 +33,7 @@ class TheThirdPart extends React.Component{
             )
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={"flex_centered"}>
                     <Loader active size={"medium"} />
                 </div>
             )

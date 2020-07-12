@@ -1,0 +1,21 @@
+.PIC{
+    margin-bottom: 0.5em !important;
+    margin-right: 1em !important;
+}
+.statusDesc{
+    display: inline-flex;
+}
+.error_color{
+    color:red;
+}
+
+.bug_description{
+    font-size: 2em !important;
+    line-height: 2.2em !important;
+}
+
+.tag{
+    background-color: #3d0099 !important;
+    margin-bottom: 1em !important;
+    color:white !important;
+}

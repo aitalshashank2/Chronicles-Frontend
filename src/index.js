@@ -4,13 +4,13 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import 'semantic-ui-css/semantic.min.css'
 import axios from 'axios'
 
-import Login from "./login"
-import Landing from "./Landing"
-import Logger from "./logger"
-import ProjectHandler from "./projectHandler"
-import ProjectView from "./projectView"
-import AdminView from "./adminView"
-import MyChores from "./myChores"
+import Login from "./components/miscellaneous/login"
+import Landing from "./components/Landing"
+import Logger from "./components/miscellaneous/logger"
+import ProjectHandler from "./components/projectHandler"
+import ProjectView from "./components/projectView"
+import AdminView from "./components/adminView"
+import MyChores from "./components/myChores"
 
 axios.defaults.baseURL = 'http://localhost:8000/'
 axios.defaults.xsrfCookieName = 'csrftoken'

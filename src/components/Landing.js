@@ -1,7 +1,7 @@
 import React from "react"
 import {Container} from "semantic-ui-react"
 
-import Navbar from "./navbar"
+import Navbar from "./miscellaneous/navbar"
 import Projects from "./projects";
 
 class Landing extends React.Component{

@@ -1,0 +1,16 @@
+.no_bugs_container{
+    text-align: center;
+}
+.no_bugs_description{
+    color: grey;
+}
+.bug_list_card{
+    padding: 0.5em !important;
+    margin-bottom: 0.25em !important;
+    background-color: inherit !important;
+}
+.bug_list_card_label{
+    background-color: #3d0099 !important;
+    margin-bottom: 5px !important;
+    color: white !important;
+}

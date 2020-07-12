@@ -1,0 +1,15 @@
+.no_comment_placeholder{
+    color:grey;
+}
+
+.comment_header{
+    margin:0 !important;
+    color: #400080 !important;
+}
+
+.crux_mobile{
+    height: 81vh !important;
+}
+.crux_desktop{
+    height: 64vh !important;
+}

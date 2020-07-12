@@ -1,0 +1,40 @@
+.main_header{
+    color: #290066 !important;
+    margin-top: 5px !important;
+}
+.main_color{
+    color: #290066 !important;
+}
+.flex_centered_partial{
+    display: flex;
+    align-items: center;
+}
+.dark_bg{
+    background-color: #000000 !important;
+}
+.new_report_card{
+    padding: 1em !important;
+    align-items: center !important;
+}
+.bug_list_bg{
+    background-color: #6600ff0f !important;
+}
+
+.crux{
+    min-height: calc(100vh - 66px);
+    max-height: calc(100vh - 66px);
+    position: absolute;
+}
+.crux_grid_column{
+    max-height: inherit;
+}
+
+.bug_list{
+    max-height: 87%;
+    overflow-y: scroll;
+}
+
+.third_part{
+    overflow-y: scroll;
+    max-height: inherit;
+}

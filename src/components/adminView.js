@@ -2,10 +2,13 @@ import React from "react"
 import axios from "axios"
 import {Redirect} from 'react-router-dom'
 
-import Navbar from "./navbar"
-import SingleLogo from "./singleLogo.png"
+import Navbar from "./miscellaneous/navbar"
+import SingleLogo from "./static/singleLogo.png"
 
 import {Loader, Container, Header, List, Image, Checkbox, Card} from "semantic-ui-react"
+
+import "../style/utility.css"
+import "../style/adminView.css"
 
 class AdminView extends React.Component{
     constructor(props) {
@@ -97,10 +100,10 @@ class AdminView extends React.Component{
                                 <List divided verticalAlign={"middle"}>
                                     {this.state.changedUserList.map((value, index) => {
                                         return (
-                                            <List.Item style={{padding: '1em'}}>
+                                            <List.Item className={'list_item'}>
                                                 <List.Content floated='right' >
-                                                    <Checkbox style={{marginRight: '3em'}} label={"Admin Status"} slider checked={value['isAdmin']} onChange={(x=index)=>{this.handleAdmin(index)}} />
-                                                    |<Checkbox style={{marginLeft: '3em'}} label={"Active Status"} slider checked={value['is_active']} onChange={(x=index)=>{this.handleActive(index)}} />
+                                                    <Checkbox className={'checkbox_right'} label={"Admin Status"} slider checked={value['isAdmin']} onChange={(x=index)=>{this.handleAdmin(index)}} />
+                                                    |<Checkbox className={'checkbox_left'} label={"Active Status"} slider checked={value['is_active']} onChange={(x=index)=>{this.handleActive(index)}} />
                                                 </List.Content>
                                                 <Image avatar src={SingleLogo} />
                                                 <List.Content>
@@ -121,7 +124,7 @@ class AdminView extends React.Component{
             }
         }else{
             return (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div className={'flex_centered'}>
                     <Loader active size="medium" />
                 </div>
             )
