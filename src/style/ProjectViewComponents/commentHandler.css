@@ -4,7 +4,13 @@
 
 .comment_header{
     margin:0 !important;
-    color: #400080 !important;
+}
+.comment_time{
+    font-size: 0.7em;
+    color: grey;
+    display: inline;
+    float: right;
+    margin-right: 10px;
 }
 
 .crux_mobile{

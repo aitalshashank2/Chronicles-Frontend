@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import {Dropdown, Header, Loader, Menu, Sticky} from "semantic-ui-react"
+import {Dropdown, Header, Loader, Menu, Sticky, Icon} from "semantic-ui-react"
 
 import "../../style/utility.css"
 import "../../style/miscellaneous/navbar.css"
@@ -8,10 +8,17 @@ import "../../style/miscellaneous/navbar.css"
 class Navbar extends React.Component{
     constructor(props) {
         super(props)
-        this.state = {user: 'anon', responseRec: false, loggedin:false, admin:false}
+        this.state = {user: 'anon', responseRec: false, loggedin:false, admin:false, isMobile:false}
+    }
+
+    updatePredicate = () => {
+        this.setState({isMobile: window.innerWidth < 600})
     }
 
     componentDidMount() {
+        this.updatePredicate()
+        window.addEventListener("resize", this.updatePredicate)
+
         axios.get('/users/curr/').then(
             (response) => {
                 this.setState({user: response.data, responseRec: true, loggedin:true})
@@ -19,6 +26,10 @@ class Navbar extends React.Component{
         ).catch(error => {
             this.setState({responseRec: true})
         })
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updatePredicate)
     }
 
     logout = () => {
@@ -56,11 +67,48 @@ class Navbar extends React.Component{
                     window.location="/admin/"
                 }
 
-                let adminButton
+                let adminButton, adminLink
 
                 if(this.state.user['isAdmin']){
                     adminButton = (
                         <Dropdown.Item icon={"spy"} text={"Admin"} value={"adminView"} onClick={this.handleDropDown} />
+                    )
+                    adminLink = (
+                        <Menu.Item>
+                            <a href={"/admin/"}>Admin</a>
+                        </Menu.Item>
+                    )
+                }
+
+                let opt
+
+                if(this.state.isMobile){
+                    opt = (
+                        <Menu.Item position={"right"}>
+                            <Dropdown text={this.state.user['username']} direction={"right"} floating item simple className={"_dropdown"}>
+                                <Dropdown.Menu>
+                                    {adminButton}
+                                    <Dropdown.Item icon={"user"} text={"My Chores"} value={"my_chores"} onClick={this.handleDropDown}/>
+                                    <Dropdown.Item icon={"plus"} text={"New Project"} value={"add"} onClick={this.handleDropDown}/>
+                                    <Dropdown.Item icon={"sign-out"} onClick={this.logout} text={"Logout"} />
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Menu.Item>
+                    )
+                }else{
+                    opt = (
+                        <Menu.Menu position={"right"}>
+                            {adminLink}
+                            <Menu.Item>
+                                <a href={"/projects/"}>New Project</a>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <a href={"/my_chores/"}><b className={"_my_chores"}>{this.state.user['username']}</b></a>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <Icon name={"power"} onClick={this.logout} className={"hoverPointer"} />
+                            </Menu.Item>
+                        </Menu.Menu>
                     )
                 }
 
@@ -70,16 +118,7 @@ class Navbar extends React.Component{
                             <Menu.Item>
                                 <a href={"/"}><Header size={"medium"} inverted>Chronicles</Header></a>
                             </Menu.Item>
-                            <Menu.Item position={"right"}>
-                                <Dropdown text={this.state.user['username']} direction={"right"} floating item simple className={"_dropdown"}>
-                                    <Dropdown.Menu>
-                                        {adminButton}
-                                        <Dropdown.Item icon={"user"} text={"My Chores"} value={"my_chores"} onClick={this.handleDropDown}/>
-                                        <Dropdown.Item icon={"plus"} text={"New Project"} value={"add"} onClick={this.handleDropDown}/>
-                                        <Dropdown.Item icon={"sign-out"} onClick={this.logout} text={"Logout"} />
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </Menu.Item>
+                            {opt}
                         </Menu>
                     </Sticky>
                 )

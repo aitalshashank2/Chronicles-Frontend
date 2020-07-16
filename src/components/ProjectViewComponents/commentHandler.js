@@ -1,5 +1,6 @@
 import React from "react"
 import axios from "axios"
+import Moment from "react-moment"
 
 import {Segment, Form, Header, Loader} from "semantic-ui-react";
 
@@ -99,7 +100,9 @@ class CommentHandler extends React.Component{
                         {this.state.comments.map((value, index) => {
                             return (
                                 <Segment vertical>
-                                    <Header size={"small"} className={"comment_header"}>{value['commenter']['username']}</Header>
+                                    <Header size={"small"} className={"comment_header"}>{value['commenter']['username']}
+                                        <div style={{fontSize:"0.7em", color:"grey", display:"inline", float:"right", marginRight:"10px"}}> • <Moment fromNowDuring={86400000} format={"HH:MM | YYYY/MM/DD"} date={value['creation']} /></div>
+                                    </Header>
                                     <p>{value['body']}</p>
                                 </Segment>
                             )
@@ -107,7 +110,9 @@ class CommentHandler extends React.Component{
                         {this.state.newCommentList.map((value, index) => {
                             return (
                                 <Segment vertical>
-                                    <Header size={"small"} className={"comment_header"}>{value['commenter']['username']}</Header>
+                                    <Header size={"small"} className={"comment_header"}>{value['commenter']['username']}
+                                        <div className={"comment_time"}> • <Moment fromNowDuring={86400000} format={"HH:MM | YYYY/MM/DD"} date={value['creation']} /></div>
+                                    </Header>
                                     <p>{value['body']}</p>
                                 </Segment>
                             )
