@@ -8,7 +8,7 @@ import {CardGroup, Grid, Header, Loader, Segment, Card, Image} from "semantic-ui
 import "../style/utility.css"
 import "../style/myChores.css"
 
-const backend = "http://localhost:8000"
+const backend = "http://localhost:54330/api"
 
 class MyChoresProjectList extends React.Component{
     constructor(props) {

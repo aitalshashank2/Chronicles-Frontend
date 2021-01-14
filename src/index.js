@@ -12,7 +12,7 @@ import ProjectView from "./components/projectView"
 import AdminView from "./components/adminView"
 import MyChores from "./components/myChores"
 
-axios.defaults.baseURL = 'http://localhost:8000/'
+axios.defaults.baseURL = 'http://localhost:54330/api/'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.withCredentials = true

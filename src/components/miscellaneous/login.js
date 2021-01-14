@@ -30,7 +30,7 @@ class Login extends React.Component{
     }
 
     render(){
-        let url = "https://internet.channeli.in/oauth/authorise/?client_id=nUeXTqAt8eJEwfmgZ9vIRSTyexUldebZO8Ht43H0&redirect_url=http://localhost:3000/logger/&state="+this.statetoken
+        let url = "https://internet.channeli.in/oauth/authorise/?client_id=nUeXTqAt8eJEwfmgZ9vIRSTyexUldebZO8Ht43H0&redirect_url=http://localhost:54330/logger/&state="+this.statetoken
 
         if(!this.state.loggedin){
             cookie.remove('statetoken', {path: "/logger"})

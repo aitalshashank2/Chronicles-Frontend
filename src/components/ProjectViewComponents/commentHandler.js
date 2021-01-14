@@ -13,7 +13,7 @@ class CommentHandler extends React.Component{
         this.state={commentData:"", comments: null, newCommentList: [], bugReport: this.props.report}
     }
 
-    ws = new WebSocket('ws://localhost:8000/ws/bugReport/'+this.props.report+'/')
+    ws = new WebSocket('ws://localhost:54330/ws/bugReport/'+this.props.report+'/')
 
     scrollToBottom = () => {
         this.commentsEnd.scrollIntoView({ behavior: "smooth" });
